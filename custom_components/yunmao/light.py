@@ -1,14 +1,16 @@
 import asyncio
-import socket
 import json
+import socket
 import time
 from datetime import timedelta
 from io import BytesIO
 from typing import Any
 
-from homeassistant import config_entries, core
+from homeassistant import config_entries
 from homeassistant.components.light import LightEntity
-from ...helpers.entity import DeviceInfo
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.config_entries import ConfigEntry
 from .const import (
     DOMAIN,
     CONF_INPUT_IP,
@@ -18,13 +20,14 @@ from .const import (
     CONF_MAC2,
     CONF_POS2
 )
+from ...helpers.entity import DeviceInfo
 
 SCAN_INTERVAL = timedelta(seconds=10)
 
 async def async_setup_entry(
-    hass: core.HomeAssistant,
-    config_entry: config_entries.ConfigEntry,
-    async_add_entities,
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Setup sensors from a config entry created in the integrations UI."""
     config = hass.data[DOMAIN][config_entry.entry_id]
