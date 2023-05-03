@@ -20,7 +20,7 @@ from .const import (
     CONF_MAC2,
     CONF_POS2
 )
-from ...helpers.entity import DeviceInfo
+from homeassistant.helpers.entity import DeviceInfo
 
 SCAN_INTERVAL = timedelta(seconds=10)
 
