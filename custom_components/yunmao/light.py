@@ -1,5 +1,6 @@
 import asyncio
 import json
+import logging
 import socket
 import time
 from datetime import timedelta
@@ -22,7 +23,8 @@ from .const import (
 )
 from homeassistant.helpers.entity import DeviceInfo
 
-SCAN_INTERVAL = timedelta(seconds=10)
+SCAN_INTERVAL = timedelta(seconds=20)
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -68,7 +70,6 @@ async def query_light_is_on(ip_addr: str):
 
 
 class YunMaoLight(LightEntity):
-    lastUpdateTime = 0
     result_json_cache = {}
 
     def __init__(self, entry: config_entries.ConfigEntry):
@@ -141,12 +142,21 @@ class YunMaoLight(LightEntity):
 
         # 5秒内使用缓存（若有）
         cache = YunMaoLight.result_json_cache.get(self._ip_addr)
-        if time.time() - YunMaoLight.lastUpdateTime < 5 and cache is not None:
-            self._update_is_on(cache)
-            return
-        YunMaoLight.lastUpdateTime = time.time()
+        if cache is not None:
+            cache_result = cache.get("cache")
+            cache_time = cache.get("time")
+            if cache_time is not None and cache_result is not None and time.time() - cache_time < 5:
+                self._update_is_on(cache_result)
+                return
 
-        result_json = await query_light_is_on(self._ip_addr)
-        YunMaoLight.result_json_cache[self._ip_addr] = result_json
-        self._update_is_on(result_json)
+        if cache is None:
+            YunMaoLight.result_json_cache = {self._ip_addr: {}}
+        YunMaoLight.result_json_cache.get(self._ip_addr)["time"] = time.time()
+
+        try:
+            result_json = await query_light_is_on(self._ip_addr)
+            self._update_is_on(result_json)
+            YunMaoLight.result_json_cache.get(self._ip_addr)["cache"] = result_json
+        finally:
+            return
 
