@@ -14,6 +14,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from .const import (
     DOMAIN,
+    CONF_PLATFORM,
     CONF_INPUT_IP,
     CONF_NAME,
     CONF_MAC,
@@ -22,6 +23,7 @@ from .const import (
     CONF_POS2
 )
 from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.const import Platform
 
 SCAN_INTERVAL = timedelta(seconds=20)
 _LOGGER = logging.getLogger(__name__)
@@ -32,6 +34,9 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Setup sensors from a config entry created in the integrations UI."""
+    if config_entry.data[CONF_PLATFORM] != Platform.LIGHT:
+        _LOGGER.warning("config_entry.data[CONF_PLATFORM] != Platform.LIGHT %s", config_entry.data)
+        return
     config = hass.data[DOMAIN][config_entry.entry_id]
     # Update our config to include new repos and remove those that have been removed.
     if config_entry.options:

@@ -35,6 +35,9 @@ LIGHT_DEVICES = {"灯带": {CONF_MAC: "FFFF301B977B24F4", CONF_POS: "1", CONF_MA
                  "主卫镜灯": {CONF_MAC: "FFFF301B977943F9", CONF_POS: "1", CONF_MAC2: None, CONF_POS2: None},
                  "主卫主灯": {CONF_MAC: "FFFF301B977943F9", CONF_POS: "2", CONF_MAC2: None, CONF_POS2: None}}
 
+CURTAIN_DEVICES = {"窗帘": "00124B002471A560",
+                   "纱帘": "00124B0024D9D179"}
+
 
 class GithubCustomConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Custom config flow."""
@@ -51,32 +54,46 @@ class GithubCustomConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 errors["base"] = "address_not_valid"
             if not errors:
                 # Input is valid, set data.
-                self.data = {}
-                for key in LIGHT_DEVICES.keys():
-                    value = LIGHT_DEVICES[key]
-                    mac = value[CONF_MAC]
-                    pos = value[CONF_POS]
-                    if self._already_configured(mac, pos):
+                self.data = None
+                for name in LIGHT_DEVICES.keys():
+                    if self._already_configured(name):
                         continue
+                    value = LIGHT_DEVICES[name]
                     self.data = {
                         CONF_PLATFORM: Platform.LIGHT,
                         CONF_INPUT_IP: user_input[CONF_INPUT_IP],
-                        CONF_NAME: key,
-                        CONF_MAC: mac,
-                        CONF_POS: pos,
+                        CONF_NAME: name,
+                        CONF_MAC: value[CONF_MAC],
+                        CONF_POS: value[CONF_POS],
                         CONF_MAC2: value[CONF_MAC2],
                         CONF_POS2: value[CONF_POS2]}
                     break
-                # Return the form of the next step.
-                return self.async_create_entry(title=self.data[CONF_NAME], data=self.data)
+
+                if self.data is None:
+                    for name in CURTAIN_DEVICES.keys():
+                        if self._already_configured(name):
+                            continue
+                        mac = CURTAIN_DEVICES[name]
+                        self.data = {
+                            CONF_PLATFORM: Platform.COVER,
+                            CONF_INPUT_IP: user_input[CONF_INPUT_IP],
+                            CONF_NAME: name,
+                            CONF_MAC: mac}
+                        break
+
+                if self.data is not None:
+                    # Return the form of the next step.
+                    return self.async_create_entry(title=self.data[CONF_NAME], data=self.data)
+                else:
+                    errors["base"] = ""
 
         return self.async_show_form(
             step_id="user", data_schema=IP_SCHEMA, errors=errors
         )
 
-    def _already_configured(self, mac, pos):
+    def _already_configured(self, name):
         for entry in self._async_current_entries():
-            if mac == entry.data.get(CONF_MAC) and pos == entry.data.get(CONF_POS):
+            if name == entry.data.get(CONF_NAME):
                 return True
         return False
 

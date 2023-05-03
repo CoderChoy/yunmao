@@ -9,7 +9,7 @@ from .const import DOMAIN, CONF_PLATFORM
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.LIGHT]
+PLATFORMS = [Platform.LIGHT, Platform.COVER]
 
 
 async def async_setup_entry(
