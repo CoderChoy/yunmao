@@ -1,11 +1,9 @@
-import asyncio
-import json
 import logging
 import socket
 import time
 from datetime import timedelta
-from io import BytesIO
 from typing import Any
+from .yunmao_data import ym_singleton
 
 from homeassistant import config_entries
 from homeassistant.components.light import LightEntity
@@ -25,7 +23,7 @@ from .const import (
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.const import Platform
 
-SCAN_INTERVAL = timedelta(seconds=20)
+SCAN_INTERVAL = timedelta(seconds=6)
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
@@ -45,37 +43,7 @@ async def async_setup_entry(
     async_add_entities(lights, update_before_add=True)
 
 
-async def query_light_is_on(ip_addr: str):
-    reader, writer = await asyncio.open_connection(host=ip_addr, port=8888)
-    # remove comment to test slow client
-    body = "{\"sourceId\":\"" + ip_addr + "\",\"serialNum\":\"" + ip_addr + "\"," \
-           "\"requestType\":\"query\",\"id\":\"0000000000000000\"}"
-    writer.write(body.encode("utf8"))  # prepare data
-    await writer.drain()  # send data
-
-    if writer.can_write_eof():
-        writer.write_eof()  # tell server that we sent all data
-
-    # better use BytesIO than += if you gonna concat many times
-    data_from_server = BytesIO()  # now get server answer
-    result_json = None
-    try:
-        while True:
-            # read chunk up to 8k bytes
-            data = await asyncio.wait_for(reader.read(8192), timeout=5.0)
-            data_from_server.write(data)
-            # if server told use that no more data
-            if reader.at_eof():
-                break
-
-        result_json = json.loads(data_from_server.getvalue().decode('utf8'))
-    finally:
-        writer.close()
-        return result_json
-
-
 class YunMaoLight(LightEntity):
-    result_json_cache = {}
 
     def __init__(self, entry: config_entries.ConfigEntry):
         self._ip_addr = entry.data[CONF_INPUT_IP]
@@ -142,26 +110,9 @@ class YunMaoLight(LightEntity):
             self._attr_is_on = (status & 1 == 1)
 
     async def async_update(self) -> None:
-        if time.time() - self._last_op_time < 30:
+        if time.time() - self._last_op_time < 10:
             return
 
-        # 5秒内使用缓存（若有）
-        cache = YunMaoLight.result_json_cache.get(self._ip_addr)
+        cache = ym_singleton.get_data_cache(self._ip_addr)
         if cache is not None:
-            cache_result = cache.get("cache")
-            cache_time = cache.get("time")
-            if cache_time is not None and cache_result is not None and time.time() - cache_time < 5:
-                self._update_is_on(cache_result)
-                return
-
-        if cache is None:
-            YunMaoLight.result_json_cache = {self._ip_addr: {}}
-        YunMaoLight.result_json_cache.get(self._ip_addr)["time"] = time.time()
-
-        try:
-            result_json = await query_light_is_on(self._ip_addr)
-            self._update_is_on(result_json)
-            YunMaoLight.result_json_cache.get(self._ip_addr)["cache"] = result_json
-        finally:
-            return
-
+            self._update_is_on(cache)

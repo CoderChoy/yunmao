@@ -9,7 +9,7 @@
   "documentation": "https://www.home-assistant.io/integrations/yunmao",
   "homekit": {},
   "iot_class": "local_polling",
-  "requirements": [],
+  "requirements": ["APScheduler==3.10.1"],
   "ssdp": [],
   "zeroconf": [],
   "version": "1.0.0"
