@@ -51,21 +51,12 @@ class YunMaoDataSingleton:
     def __init__(self):
         self.data_cache = {}
         self._scheduler = AsyncIOScheduler()
-        self._scheduler.add_job(self._background_task1, 'interval', seconds=5, max_instances=1)
-        self._scheduler.add_job(self._background_task2, 'interval', seconds=5, max_instances=1)
+        self._scheduler.add_job(self._background_task, 'interval', seconds=2, max_instances=1)
         self._scheduler.start()
 
-    async def _background_task1(self):
+    async def _background_task(self):
         # 请求服务器并保存数据
         ip_addr = "192.168.88.118"
-        server_data = await _request_data_from_server(ip_addr)
-        # 保存数据到 data_cache 变量
-        with self._lock:
-            self.data_cache[ip_addr] = server_data
-
-    async def _background_task2(self):
-        # 请求服务器并保存数据
-        ip_addr = "192.168.88.143"
         server_data = await _request_data_from_server(ip_addr)
         # 保存数据到 data_cache 变量
         with self._lock:

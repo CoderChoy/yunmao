@@ -23,7 +23,7 @@ from .const import (
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.const import Platform
 
-SCAN_INTERVAL = timedelta(seconds=6)
+SCAN_INTERVAL = timedelta(seconds=2)
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
@@ -110,7 +110,7 @@ class YunMaoLight(LightEntity):
             self._attr_is_on = (status & 1 == 1)
 
     async def async_update(self) -> None:
-        if time.time() - self._last_op_time < 10:
+        if time.time() - self._last_op_time < 5:
             return
 
         cache = ym_singleton.get_data_cache(self._ip_addr)
