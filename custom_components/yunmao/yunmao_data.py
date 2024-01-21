@@ -1,8 +1,9 @@
-import threading
-import logging
 import asyncio
-import json
 from io import BytesIO
+import json
+import logging
+import threading
+
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 _LOGGER = logging.getLogger(__name__)
@@ -11,8 +12,10 @@ _LOGGER = logging.getLogger(__name__)
 async def _request_data_from_server(ip_addr: str):
     reader, writer = await asyncio.open_connection(host=ip_addr, port=8888)
     # remove comment to test slow client
-    body = "{\"sourceId\":\"" + ip_addr + "\",\"serialNum\":\"" + ip_addr + "\"," \
-            "\"requestType\":\"query\",\"id\":\"0000000000000000\"}"
+    body = (
+        '{"sourceId":"' + ip_addr + '","serialNum":"' + ip_addr + '",'
+        '"requestType":"query","id":"0000000000000000"}'
+    )
     writer.write(body.encode("utf8"))  # prepare data
     await writer.drain()  # send data
 
@@ -31,7 +34,7 @@ async def _request_data_from_server(ip_addr: str):
             if reader.at_eof():
                 break
 
-        result_json = json.loads(data_from_server.getvalue().decode('utf8'))
+        result_json = json.loads(data_from_server.getvalue().decode("utf8"))
     finally:
         writer.close()
         return result_json
@@ -51,7 +54,9 @@ class YunMaoDataSingleton:
     def __init__(self):
         self.data_cache = {}
         self._scheduler = AsyncIOScheduler()
-        self._scheduler.add_job(self._background_task, 'interval', seconds=2, max_instances=1)
+        self._scheduler.add_job(
+            self._background_task, "interval", seconds=2, max_instances=1
+        )
         self._scheduler.start()
 
     async def _background_task(self):

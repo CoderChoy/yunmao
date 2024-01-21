@@ -1,30 +1,32 @@
+from datetime import timedelta
 import logging
 import socket
 import time
-from datetime import timedelta
 from typing import Any
-from .yunmao_data import ym_singleton
 
 from homeassistant import config_entries
 from homeassistant.components.light import LightEntity
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
-from .const import (
-    DOMAIN,
-    CONF_PLATFORM,
-    CONF_INPUT_IP,
-    CONF_NAME,
-    CONF_MAC,
-    CONF_POS,
-    CONF_MAC2,
-    CONF_POS2
-)
-from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.const import Platform
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+from .const import (
+    CONF_INPUT_IP,
+    CONF_MAC,
+    CONF_MAC2,
+    CONF_NAME,
+    CONF_PLATFORM,
+    CONF_POS,
+    CONF_POS2,
+    DOMAIN,
+)
+from .yunmao_data import ym_singleton
 
 SCAN_INTERVAL = timedelta(seconds=2)
 _LOGGER = logging.getLogger(__name__)
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -33,7 +35,9 @@ async def async_setup_entry(
 ) -> None:
     """Setup sensors from a config entry created in the integrations UI."""
     if config_entry.data[CONF_PLATFORM] != Platform.LIGHT:
-        _LOGGER.warning("config_entry.data[CONF_PLATFORM] != Platform.LIGHT %s", config_entry.data)
+        _LOGGER.warning(
+            "config_entry.data[CONF_PLATFORM] != Platform.LIGHT %s", config_entry.data
+        )
         return
     config = hass.data[DOMAIN][config_entry.entry_id]
     # Update our config to include new repos and remove those that have been removed.
@@ -44,7 +48,6 @@ async def async_setup_entry(
 
 
 class YunMaoLight(LightEntity):
-
     def __init__(self, entry: config_entries.ConfigEntry):
         self._ip_addr = entry.data[CONF_INPUT_IP]
         self._name = entry.data[CONF_NAME]
@@ -85,11 +88,25 @@ class YunMaoLight(LightEntity):
 
     def _set_light_is_on(self, mac, pos, is_on):
         if is_on:
-            body = "{\"sourceId\":\"" + self._ip_addr + "\",\"serialNum\":\"210431\",\"requestType\":\"cmd\",\"id\":\"" + \
-                    mac + "\",\"attributes\":{\"KY" + pos + "\":\"ON\"}}"
+            body = (
+                '{"sourceId":"'
+                + self._ip_addr
+                + '","serialNum":"210431","requestType":"cmd","id":"'
+                + mac
+                + '","attributes":{"KY'
+                + pos
+                + '":"ON"}}'
+            )
         else:
-            body = "{\"sourceId\":\"" + self._ip_addr + "\",\"serialNum\":\"210431\",\"requestType\":\"cmd\",\"id\":\"" + \
-                   mac + "\",\"attributes\":{\"KY" + pos + "\":\"OFF\"}}"
+            body = (
+                '{"sourceId":"'
+                + self._ip_addr
+                + '","serialNum":"210431","requestType":"cmd","id":"'
+                + mac
+                + '","attributes":{"KY'
+                + pos
+                + '":"OFF"}}'
+            )
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(2)
         s.connect((self._ip_addr, 8888))
@@ -100,14 +117,14 @@ class YunMaoLight(LightEntity):
     def _update_is_on(self, status_data):
         if status_data is None:
             return
-        swi = status_data["attributes"][self._mac]['SWI']
+        swi = status_data["attributes"][self._mac]["SWI"]
         if swi is not None:
             bits = int(self._pos)
             status = int(swi, 0)
             while bits > 1:
                 status >>= 1
                 bits -= 1
-            self._attr_is_on = (status & 1 == 1)
+            self._attr_is_on = status & 1 == 1
 
     async def async_update(self) -> None:
         if time.time() - self._last_op_time < 5:
