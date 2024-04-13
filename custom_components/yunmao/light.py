@@ -24,7 +24,6 @@ from .const import (
 )
 from .yunmao_data import ym_singleton
 
-SCAN_INTERVAL = timedelta(seconds=2)
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -55,7 +54,7 @@ class YunMaoLight(LightEntity):
         self._pos = entry.data[CONF_POS]
         self._mac2 = entry.data[CONF_MAC2]
         self._pos2 = entry.data[CONF_POS2]
-        self._last_op_time = 0
+        ym_singleton.add_light_entity(self)
 
     @property
     def name(self) -> str | None:
@@ -112,24 +111,3 @@ class YunMaoLight(LightEntity):
         s.connect((self._ip_addr, 8888))
         s.sendall(body.encode())
         self._attr_is_on = is_on
-        self._last_op_time = time.time()
-
-    def _update_is_on(self, status_data):
-        if status_data is None:
-            return
-        swi = status_data["attributes"][self._mac]["SWI"]
-        if swi is not None:
-            bits = int(self._pos)
-            status = int(swi, 0)
-            while bits > 1:
-                status >>= 1
-                bits -= 1
-            self._attr_is_on = status & 1 == 1
-
-    async def async_update(self) -> None:
-        if time.time() - self._last_op_time < 5:
-            return
-
-        cache = ym_singleton.get_data_cache(self._ip_addr)
-        if cache is not None:
-            self._update_is_on(cache)

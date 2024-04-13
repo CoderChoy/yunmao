@@ -1,9 +1,7 @@
 {
   "domain": "yunmao",
   "name": "Yun Mao",
-  "codeowners": [
-    "@coderchoy"
-  ],
+  "codeowners": ["@coderchoy"],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://www.home-assistant.io/integrations/yunmao",

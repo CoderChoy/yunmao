@@ -1,11 +1,11 @@
 """Yun Mao Component."""
-import asyncio
+
 import logging
 
 from homeassistant import config_entries, core
 from homeassistant.const import Platform
 
-from .const import DOMAIN, CONF_PLATFORM
+from .const import CONF_PLATFORM, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 

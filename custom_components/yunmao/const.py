@@ -7,4 +7,3 @@ CONF_MAC = "mac"
 CONF_POS = "pos"
 CONF_MAC2 = "mac2"
 CONF_POS2 = "pos2"
-

@@ -7,23 +7,19 @@ from homeassistant import config_entries
 from homeassistant.components.cover import (
     ATTR_POSITION,
     CoverDeviceClass,
-    CoverEntityFeature,
     CoverEntity,
+    CoverEntityFeature,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from .const import (
-    DOMAIN,
-    CONF_PLATFORM,
-    CONF_INPUT_IP,
-    CONF_NAME,
-    CONF_MAC
-)
+
+from .const import CONF_INPUT_IP, CONF_MAC, CONF_NAME, CONF_PLATFORM, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -32,7 +28,9 @@ async def async_setup_entry(
 ) -> None:
     """Setup sensors from a config entry created in the integrations UI."""
     if config_entry.data[CONF_PLATFORM] != Platform.COVER:
-        _LOGGER.warning("config_entry.data[CONF_PLATFORM] != Platform.COVER %s", config_entry.data)
+        _LOGGER.warning(
+            "config_entry.data[CONF_PLATFORM] != Platform.COVER %s", config_entry.data
+        )
         return
     config = hass.data[DOMAIN][config_entry.entry_id]
     # Update our config to include new repos and remove those that have been removed.
@@ -43,7 +41,6 @@ async def async_setup_entry(
 
 
 class YunMaoCurtain(CoverEntity):
-
     _attr_device_class = CoverDeviceClass.CURTAIN
     _attr_supported_features = (
         CoverEntityFeature.OPEN
@@ -107,8 +104,15 @@ class YunMaoCurtain(CoverEntity):
         self._set_cover_status("STOP")
 
     def _set_cover_status(self, status: str):
-        body = "{\"sourceId\":\"" + self._ip_addr + "\",\"serialNum\":\"210431\",\"requestType\":\"cmd\",\"id\":\"" + \
-               self._mac + "\",\"attributes\":{\"WIN\":\"" + status + "\"}}"
+        body = (
+            '{"sourceId":"'
+            + self._ip_addr
+            + '","serialNum":"210431","requestType":"cmd","id":"'
+            + self._mac
+            + '","attributes":{"WIN":"'
+            + status
+            + '"}}'
+        )
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((self._ip_addr, 8888))
         s.sendall(body.encode())
@@ -116,11 +120,17 @@ class YunMaoCurtain(CoverEntity):
     def set_cover_position(self, **kwargs: Any) -> None:
         position = kwargs.get(ATTR_POSITION)
         self._last_op_time = time.time()
-        self._attr_is_closed = (position == 0)
+        self._attr_is_closed = position == 0
         self._attr_current_cover_position = position
-        body = "{\"sourceId\":\"" + self._ip_addr + "\",\"serialNum\":\"210431\",\"requestType\":\"cmd\",\"id\":\"" + \
-               self._mac + "\",\"attributes\":{\"LEV\":\"" + str(position) + "\"}}"
+        body = (
+            '{"sourceId":"'
+            + self._ip_addr
+            + '","serialNum":"210431","requestType":"cmd","id":"'
+            + self._mac
+            + '","attributes":{"LEV":"'
+            + str(position)
+            + '"}}'
+        )
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((self._ip_addr, 8888))
         s.sendall(body.encode())
-
