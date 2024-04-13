@@ -4,8 +4,10 @@ import json
 import logging
 import threading
 
-from homeassistant.components.light import LightEntity
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+from homeassistant.components.cover import CoverEntity
+from homeassistant.components.light import LightEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,8 +16,8 @@ async def _request_data_from_server(ip_addr: str):
     reader, writer = await asyncio.open_connection(host=ip_addr, port=8888)
     # remove comment to test slow client
     body = (
-            '{"sourceId":"' + ip_addr + '","serialNum":"' + ip_addr + '",'
-                                                                      '"requestType":"query","id":"0000000000000000"}'
+        '{"sourceId":"' + ip_addr + '","serialNum":"' + ip_addr + '",'
+        '"requestType":"query","id":"0000000000000000"}'
     )
     writer.write(body.encode("utf8"))  # prepare data
     await writer.drain()  # send data
@@ -42,7 +44,7 @@ async def _request_data_from_server(ip_addr: str):
 
 
 async def handle_client(reader, writer):
-    addr = writer.get_extra_info('peername')
+    addr = writer.get_extra_info("peername")
     _LOGGER.info(f"Client {addr} connected.")
 
     try:
@@ -51,14 +53,14 @@ async def handle_client(reader, writer):
             data = await asyncio.wait_for(reader.read(8192), 120)
             if not data:
                 break
-            decode_data: str = data.decode('utf-8')
+            decode_data: str = data.decode("utf-8")
             # _LOGGER.warning(f"Received {decode_data} \n")
             for message in decode_data.split("\n"):
                 if len(message) > 6:
                     ym_singleton.handle_gateway_data(json.loads(message))
 
-    except asyncio.TimeoutError:
-        _LOGGER.error('Client connection timed out')
+    except TimeoutError:
+        _LOGGER.error("Client connection timed out")
     except ConnectionResetError:
         _LOGGER.error(f"Connection with {addr} was reset by the peer.")
     except Exception as e:
@@ -70,7 +72,7 @@ async def handle_client(reader, writer):
 
 
 async def start_yun_mao_server():
-    server = await asyncio.start_server(handle_client, '0.0.0.0', 21688)
+    server = await asyncio.start_server(handle_client, "0.0.0.0", 21688)
     async with server:
         await server.serve_forever()
 
@@ -94,13 +96,23 @@ class YunMaoDataSingleton:
 
     def __init__(self):
         self.lights: list[LightEntity] = []
+        self.covers: list[CoverEntity] = []
         self._scheduler = AsyncIOScheduler()
         self._scheduler.add_job(
             self._background_task, "interval", seconds=10, max_instances=1
         )
         self._scheduler.start()
-        self._thread = threading.Thread(target=background_server_task, name='YunMaoServer')
+        self._thread = threading.Thread(
+            target=background_server_task, name="YunMaoServer"
+        )
         self._thread.start()
+
+    def add_light_entity(self, entity: LightEntity):
+        with self._lock:
+            self.lights.append(entity)
+
+    def add_cover_entity(self, entity: CoverEntity):
+        self.covers.append(entity)
 
     async def _background_task(self):
         # 请求服务器并保存数据
@@ -123,9 +135,18 @@ class YunMaoDataSingleton:
                     light.schedule_update_ha_state()
                     # _LOGGER.warning(f"request_data light._attr_is_on={light._attr_is_on} bits={bits} status={status}")
 
-    def add_light_entity(self, entity: LightEntity):
-        with self._lock:
-            self.lights.append(entity)
+            for cover in self.covers:
+                status = server_data["attributes"][cover._mac]["WIN"]
+                if status == "CLOSE":
+                    cover._attr_is_closed = True
+                    cover._attr_current_cover_position = 0
+                elif status == "OPEN":
+                    cover._attr_is_closed = False
+                    cover._attr_current_cover_position = 100
+                elif status == "STOP":
+                    cover._attr_is_closed = False
+                    cover._attr_current_cover_position = 50
+                cover.schedule_update_ha_state()
 
     def handle_gateway_data(self, data: dict):
         # Received {"sourceId":"301B976FB162","req":"heart","requestType":"update","serialNum":-1,"attributes":
@@ -149,6 +170,25 @@ class YunMaoDataSingleton:
                                 light._attr_is_on = is_on
                                 light.schedule_update_ha_state()
                                 # _LOGGER.error(f"handle_gateway_data light._attr_is_on={light._attr_is_on} bits={bits} status={status}")
+
+                for cover in self.covers:
+                    if (
+                        cover._mac == mac
+                        and not cover.is_opening
+                        and not cover.is_closing
+                    ):
+                        status = attributes.get("WIN")
+                        if status == "CLOSE":
+                            cover._attr_is_closed = True
+                            cover._attr_current_cover_position = 0
+                        elif status == "OPEN":
+                            cover._attr_is_closed = False
+                            cover._attr_current_cover_position = 100
+                        elif status == "STOP":
+                            cover._attr_is_closed = False
+                            cover._attr_current_cover_position = 50
+                        if status is not None:
+                            cover.schedule_update_ha_state()
 
 
 ym_singleton = YunMaoDataSingleton()

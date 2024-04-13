@@ -1,3 +1,4 @@
+from datetime import timedelta
 import logging
 import socket
 import time
@@ -17,7 +18,9 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import CONF_INPUT_IP, CONF_MAC, CONF_NAME, CONF_PLATFORM, DOMAIN
+from .yunmao_data import ym_singleton
 
+SCAN_INTERVAL = timedelta(seconds=5)
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -55,9 +58,11 @@ class YunMaoCurtain(CoverEntity):
         self._ip_addr = entry.data[CONF_INPUT_IP]
         self._name = entry.data[CONF_NAME]
         self._mac = entry.data[CONF_MAC]
-        self._last_op_time = 0
+        self._last_open_time = 0
+        self._last_close_time = 0
         self._attr_is_closed = False
         self._attr_current_cover_position = 100
+        ym_singleton.add_cover_entity(self)
 
     @property
     def name(self) -> str | None:
@@ -80,25 +85,29 @@ class YunMaoCurtain(CoverEntity):
 
     @property
     def is_opening(self) -> bool | None:
-        return time.time() - self._last_op_time <= 5
+        return time.time() - self._last_open_time <= 4
 
     @property
     def is_closing(self) -> bool | None:
-        return time.time() - self._last_op_time <= 5
+        return time.time() - self._last_close_time <= 4
 
     def open_cover(self, **kwargs: Any) -> None:
-        self._last_op_time = time.time()
+        self._last_open_time = time.time()
+        self._last_close_time = 0
         self._attr_is_closed = False
         self._attr_current_cover_position = 100
         self._set_cover_status("OPEN")
 
     def close_cover(self, **kwargs: Any) -> None:
-        self._last_op_time = time.time()
+        self._last_open_time = 0
+        self._last_close_time = time.time()
         self._attr_is_closed = True
         self._attr_current_cover_position = 0
         self._set_cover_status("CLOSE")
 
     def stop_cover(self, **kwargs: Any) -> None:
+        self._last_open_time = 0
+        self._last_close_time = 0
         self._attr_is_closed = False
         self._attr_current_cover_position = 50
         self._set_cover_status("STOP")

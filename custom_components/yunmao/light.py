@@ -1,11 +1,9 @@
-from datetime import timedelta
 import logging
 import socket
-import time
 from typing import Any
 
 from homeassistant import config_entries
-from homeassistant.components.light import LightEntity
+from homeassistant.components.light import ColorMode, LightEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
@@ -47,6 +45,8 @@ async def async_setup_entry(
 
 
 class YunMaoLight(LightEntity):
+    _attr_color_mode = ColorMode.ONOFF
+
     def __init__(self, entry: config_entries.ConfigEntry):
         self._ip_addr = entry.data[CONF_INPUT_IP]
         self._name = entry.data[CONF_NAME]
