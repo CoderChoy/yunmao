@@ -52,7 +52,7 @@ async def handle_client(reader, writer):
             if not data:
                 break
             decode_data: str = data.decode('utf-8')
-            # _LOGGER.info(f"Received {decode_data} \n")
+            # _LOGGER.warning(f"Received {decode_data} \n")
             for message in decode_data.split("\n"):
                 if len(message) > 6:
                     ym_singleton.handle_gateway_data(json.loads(message))
@@ -120,7 +120,8 @@ class YunMaoDataSingleton:
                         status >>= 1
                         bits -= 1
                     light._attr_is_on = status & 1 == 1
-                    # _LOGGER.error(f"request_data light._attr_is_on={light._attr_is_on} bits={bits} status={status}")
+                    light.schedule_update_ha_state()
+                    # _LOGGER.warning(f"request_data light._attr_is_on={light._attr_is_on} bits={bits} status={status}")
 
     def add_light_entity(self, entity: LightEntity):
         with self._lock:
@@ -146,8 +147,8 @@ class YunMaoDataSingleton:
                             is_on = status & 1 == 1
                             if light._attr_is_on != is_on:
                                 light._attr_is_on = is_on
+                                light.schedule_update_ha_state()
                                 # _LOGGER.error(f"handle_gateway_data light._attr_is_on={light._attr_is_on} bits={bits} status={status}")
-                            break
 
 
 ym_singleton = YunMaoDataSingleton()
