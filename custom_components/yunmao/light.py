@@ -20,7 +20,6 @@ from .const import (
     CONF_POS2,
     DOMAIN,
 )
-from .yunmao_data import ym_singleton
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -46,6 +45,7 @@ async def async_setup_entry(
 
 class YunMaoLight(LightEntity):
     _attr_color_mode = ColorMode.ONOFF
+    _attr_supported_color_modes = ColorMode.ONOFF
 
     def __init__(self, entry: config_entries.ConfigEntry):
         self._ip_addr = entry.data[CONF_INPUT_IP]
@@ -54,7 +54,7 @@ class YunMaoLight(LightEntity):
         self._pos = entry.data[CONF_POS]
         self._mac2 = entry.data[CONF_MAC2]
         self._pos2 = entry.data[CONF_POS2]
-        ym_singleton.add_light_entity(self)
+        self.get_ym_singleton().add_light_entity(self)
 
     @property
     def name(self) -> str | None:
@@ -111,3 +111,7 @@ class YunMaoLight(LightEntity):
         s.connect((self._ip_addr, 8888))
         s.sendall(body.encode())
         self._attr_is_on = is_on
+
+    def get_ym_singleton(self):
+        from .yunmao_data import ym_singleton
+        return ym_singleton

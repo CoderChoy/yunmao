@@ -18,7 +18,6 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import CONF_INPUT_IP, CONF_MAC, CONF_NAME, CONF_PLATFORM, DOMAIN
-from .yunmao_data import ym_singleton
 
 SCAN_INTERVAL = timedelta(seconds=5)
 _LOGGER = logging.getLogger(__name__)
@@ -62,7 +61,7 @@ class YunMaoCurtain(CoverEntity):
         self._last_close_time = 0
         self._attr_is_closed = False
         self._attr_current_cover_position = 100
-        ym_singleton.add_cover_entity(self)
+        self.get_ym_singleton().add_cover_entity(self)
 
     @property
     def name(self) -> str | None:
@@ -143,3 +142,7 @@ class YunMaoCurtain(CoverEntity):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((self._ip_addr, 8888))
         s.sendall(body.encode())
+
+    def get_ym_singleton(self):
+        from .yunmao_data import ym_singleton
+        return ym_singleton
