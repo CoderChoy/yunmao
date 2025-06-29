@@ -124,7 +124,7 @@ class YunMaoDataSingleton:
 
         with self._lock:
             for light in self.lights:
-                swi = server_data["attributes"][light._mac]["SWI"]
+                swi = server_data.get("attributes").get(light._mac).get("SWI")
                 if swi is not None:
                     bits = int(light._pos)
                     status = int(swi, 0)
@@ -136,7 +136,7 @@ class YunMaoDataSingleton:
                     # _LOGGER.warning(f"request_data light._attr_is_on={light._attr_is_on} bits={bits} status={status}")
 
             for cover in self.covers:
-                status = server_data["attributes"][cover._mac]["WIN"]
+                status = server_data.get("attributes").get(cover._mac).get("WIN")
                 if status == "CLOSE":
                     cover._attr_is_closed = True
                     cover._attr_current_cover_position = 0

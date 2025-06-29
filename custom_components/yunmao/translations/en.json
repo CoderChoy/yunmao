@@ -1,19 +1,19 @@
 {
-  "config": {
-    "error": {
-      "address_not_valid": "IPv4 address not valid"
-    },
-    "step": {
-      "user": {
-        "data": {
-          "input_ip": "ip address"
+    "config": {
+        "abort": {
+            "no_devices_found": "No devices found on the network",
+            "single_instance_allowed": "Already configured. Only a single configuration possible."
         },
-        "description": "Enter your gateway ip address"
-      }
-    },
-    "abort": {
-      "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]",
-      "no_devices_found": "[%key:common::config_flow::abort::no_devices_found%]"
+        "error": {
+            "address_not_valid": "IPv4 address not valid"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "input_ip": "ip address"
+                },
+                "description": "Enter your gateway ip address"
+            }
+        }
     }
-  }
 }
