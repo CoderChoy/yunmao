@@ -1,0 +1,1178 @@
+custom_components/yunmao/__init__.py
+  676c6e66c530ec3a 1,3,5,7-14,17-18,20,25-26,28-32,34-35,37-39,42-43,45
+custom_components/yunmao/config_flow.py
+  676c6e66c530ec3a 1,3,5-6,9-16,20-21,24-25,27-30,33-44,46-47,49,52-56,58-60,63-65
+custom_components/yunmao/coordinator.py
+  676c6e66c530ec3a 1-519
+custom_components/yunmao/entity.py
+  676c6e66c530ec3a 1-33
+custom_components/yunmao/cover.py
+  676c6e66c530ec3a 1-4,16-17,22,25-29,31-35,38-40,50-51,53,56-57,59,62-65,68-93,95-98
+custom_components/yunmao/light.py
+  676c6e66c530ec3a 1-4,11-12,17,20-24,27-30,33-34,37,40-41,43,45-55
+custom_components/yunmao/diagnostics.py
+  676c6e66c530ec3a 1-27
+custom_components/yunmao/client.py
+  676c6e66c530ec3a 1-4,7,9,11,13-14,17-18,21-22,25-26,29-45,47-76,78-148
+custom_components/yunmao/const.py
+  676c6e66c530ec3a 1-10,20-134
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "e9290ac8b15ccb8f3cdbb0e2845429074cd0d809",
+  "prompts": {
+    "676c6e66c530ec3a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019da4c6-1bc2-7ae0-8e87-d3756203ca6f",
+        "model": "gpt-5.4"
+      },
+      "human_author": "caishili <caishili@bigo.sg>",
+      "messages": [
+        {
+          "type": "user",
+          "text": "<environment_context>\n  <cwd>/Users/caishili/Documents/Personal/yunmao</cwd>\n  <shell>zsh</shell>\n  <current_date>2026-04-19</current_date>\n  <timezone>Asia/Shanghai</timezone>\n</environment_context>",
+          "timestamp": "2026-04-19T08:05:54.441Z"
+        },
+        {
+          "type": "user",
+          "text": "Generate a file named AGENTS.md that serves as a contributor guide for this repository.\nYour goal is to produce a clear, concise, and well-structured document with descriptive headings and actionable explanations for each section.\nFollow the outline below, but adapt as needed — add sections if relevant, and omit those that do not apply to this project.\n\nDocument Requirements\n\n- Title the document \"Repository Guidelines\".\n- Use Markdown headings (#, ##, etc.) for structure.\n- Keep the document concise. 200-400 words is optimal.\n- Keep explanations short, direct, and specific to this repository.\n- Provide examples where helpful (commands, directory paths, naming patterns).\n- Maintain a professional, instructional tone.\n\nRecommended Sections\n\nProject Structure & Module Organization\n\n- Outline the project structure, including where the source code, tests, and assets are located.\n\nBuild, Test, and Development Commands\n\n- List key commands for building, testing, and running locally (e.g., npm test, make build).\n- Briefly explain what each command does.\n\nCoding Style & Naming Conventions\n\n- Specify indentation rules, language-specific style preferences, and naming patterns.\n- Include any formatting or linting tools used.\n\nTesting Guidelines\n\n- Identify testing frameworks and coverage requirements.\n- State test naming conventions and how to run tests.\n\nCommit & Pull Request Guidelines\n\n- Summarize commit message conventions found in the project’s Git history.\n- Outline pull request requirements (descriptions, linked issues, screenshots, etc.).\n\n(Optional) Add other sections if relevant, such as Security & Configuration Tips, Architecture Overview, or Agent-Specific Instructions.",
+          "timestamp": "2026-04-19T08:05:54.441Z"
+        },
+        {
+          "type": "assistant",
+          "text": "需要先看这个仓库的实际结构和现有脚本，再据此写一份贴合仓库的 `AGENTS.md`，避免泛化模板。",
+          "timestamp": "2026-04-19T08:06:05.396Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "pwd",
+            "max_output_tokens": 2000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:05.397Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "rg --files -g 'package.json' -g 'pyproject.toml' -g 'Cargo.toml' -g 'go.mod' -g 'Makefile' -g 'README*' -g '.eslintrc*' -g 'eslint.config.*' -g 'tsconfig.json' -g 'vite.config.*' -g 'next.config.*' -g 'playwright.config.*' -g 'jest.config.*' -g 'pytest.ini' -g 'requirements.txt' -g '.prettierrc*' -g 'pnpm-lock.yaml' -g 'yarn.lock' -g 'package-lock.json'",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:05.397Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "find . -maxdepth 2 -type d | sort",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:05.397Z"
+        },
+        {
+          "type": "assistant",
+          "text": "仓库很小，目前可见的主体是 `custom_components/yunmao`，看起来像 Home Assistant 自定义集成。我继续读 `README` 和源码文件，提炼真实的开发/测试约定。",
+          "timestamp": "2026-04-19T08:06:11.658Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "rg --files",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:11.659Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' README.md",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:11.778Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "find custom_components/yunmao -maxdepth 2 -type f | sort",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:11.778Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "ls -la",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:17.115Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' custom_components/yunmao/manifest.json",
+            "max_output_tokens": 2000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:17.116Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git log --oneline -n 8",
+            "max_output_tokens": 2000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:17.279Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我已经确认这不是带现成构建脚本的应用仓库，而是一个 Home Assistant 自定义集成。接下来我读几个核心文件，提炼代码风格、模块职责和可执行的本地验证方式。",
+          "timestamp": "2026-04-19T08:06:28.614Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' custom_components/yunmao/__init__.py",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:28.614Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' custom_components/yunmao/config_flow.py",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:28.733Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' custom_components/yunmao/light.py",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:28.733Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' custom_components/yunmao/cover.py",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:28.733Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' custom_components/yunmao/const.py",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:28.733Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' custom_components/yunmao/yunmao_data.py",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:28.734Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,200p' hacs.json",
+            "max_output_tokens": 1000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:33.458Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,200p' .gitignore",
+            "max_output_tokens": 1000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:33.459Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git status --short",
+            "max_output_tokens": 1000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:06:33.459Z"
+        },
+        {
+          "type": "assistant",
+          "text": "接下来我会直接新增 `AGENTS.md`，内容按这个仓库的 Home Assistant 集成形态来写，并把没有实际存在的构建/测试体系明确标注为“当前缺失”。",
+          "timestamp": "2026-04-19T08:06:58.036Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Add File: /Users/caishili/Documents/Personal/yunmao/AGENTS.md\n+# Repository Guidelines\n+\n+## Project Structure & Module Organization\n+`custom_components/yunmao/` contains the full Home Assistant integration. Use `__init__.py` for config-entry setup, `config_flow.py` for onboarding and device registration, `light.py` and `cover.py` for entity behavior, and `yunmao_data.py` for polling and TCP server state. Keep shared constants in `const.py`. Integration metadata and UI text live in `manifest.json`, `strings.json`, and `translations/en.json`. The repo root only holds support files such as `hacs.json`, `README.md`, and `LICENSE`.\n+\n+## Build, Test, and Development Commands\n+There is no dedicated build script in this repository. Use these lightweight checks during development:\n+\n+- `python -m compileall custom_components/yunmao` checks Python syntax.\n+- `cp -R custom_components/yunmao /path/to/config/custom_components/` installs the integration into a local Home Assistant config directory.\n+- Restart Home Assistant, then add `Yun Mao` through Settings > Devices & Services to validate the config flow and entities.\n+- `git status` should stay clean before opening a PR.\n+\n+## Coding Style & Naming Conventions\n+Follow the existing Home Assistant-style Python layout: 4-space indentation, `snake_case` for functions and variables, and `UPPER_CASE` for constants. Match current module boundaries instead of adding large mixed-purpose files. Keep entity-facing names descriptive and aligned with the existing device map. When UI text changes, update both `strings.json` and the relevant translation files.\n+\n+## Testing Guidelines\n+No automated test suite is checked in today, so every change needs a manual smoke test in Home Assistant. At minimum, verify setup through the config flow, light on/off behavior, cover open/close/stop behavior, and gateway updates over ports `8888` and `21688`. If you add tests later, place them under `tests/` and use `test_<module>.py` naming.\n+\n+## Commit & Pull Request Guidelines\n+Recent commits use short subjects such as `bug fix`, `server mode`, and `Optimize data pull`. Keep commit messages brief, imperative, and focused on one change, for example `fix cover stop state`. Pull requests should summarize the behavior change, mention any IP/MAC/port assumptions, and include Home Assistant screenshots or relevant log snippets when UI or connection behavior changes.\n+\n+## Security & Configuration Tips\n+This codebase already contains real-looking local network values and device identifiers. Do not add more private environment data unless required, and prefer moving new settings into the config flow instead of hardcoding them. Scrub IPs, MACs, and device names from screenshots or logs before sharing externally.\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:07:07.940Z"
+        },
+        {
+          "type": "assistant",
+          "text": "文件已写入。我再做一次快速校验，确认字数、Markdown 结构和内容都符合要求，没有偏离仓库现状。",
+          "timestamp": "2026-04-19T08:07:12.030Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "wc -w AGENTS.md",
+            "max_output_tokens": 1000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:07:12.030Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' AGENTS.md",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:07:12.030Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git diff -- AGENTS.md",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:07:12.157Z"
+        },
+        {
+          "type": "assistant",
+          "text": "Created [AGENTS.md](/Users/caishili/Documents/Personal/yunmao/AGENTS.md). It is tailored to this Home Assistant custom integration repo and covers structure under `custom_components/yunmao`, practical local validation commands, Python/Home Assistant style expectations, current manual testing expectations, commit/PR conventions inferred from git history, and basic security guidance around hardcoded network/device data.\n\nVerified the file is within the requested range at 373 words.",
+          "timestamp": "2026-04-19T08:07:17.074Z"
+        },
+        {
+          "type": "user",
+          "text": "这是我的一个自定义HomeAssistant集成插件，帮我看下怎么优化代码，期望能适配最新的HomeAssistant系统要求,尽量沿用设备标识符，因为有在Node-RED中用到一些设备",
+          "timestamp": "2026-04-19T08:08:30.495Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我先把当前集成的实现形态和 Home Assistant 近期的集成规范对一遍，找出会影响兼容性和实体稳定性的点，再给你一个尽量保留现有设备标识的改造方案。",
+          "timestamp": "2026-04-19T08:08:38.983Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' custom_components/yunmao/strings.json",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:08:38.983Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' custom_components/yunmao/translations/en.json",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:08:38.983Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' hacs.json",
+            "max_output_tokens": 1000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:08:39.100Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "python -m compileall custom_components/yunmao",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:08:39.100Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "web_search_call",
+          "input": {
+            "action": {
+              "queries": [
+                "Home Assistant developer docs integration quality scale ConfigEntry runtime_data async_unload_entry coordinator official",
+                "site:developers.home-assistant.io Home Assistant fetching data integration guidelines asyncio socket official",
+                "site:developers.home-assistant.io Home Assistant entity unique_id device registry config flow translations manifest requirements"
+              ],
+              "query": "Home Assistant developer docs integration quality scale ConfigEntry runtime_data async_unload_entry coordinator official",
+              "type": "search"
+            },
+            "status": "completed",
+            "type": "web_search_call"
+          },
+          "timestamp": "2026-04-19T08:08:47.946Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "web_search_call",
+          "input": {
+            "action": {
+              "type": "open_page",
+              "url": "https://developers.home-assistant.io/docs/creating_integration_manifest"
+            },
+            "status": "completed",
+            "type": "web_search_call"
+          },
+          "timestamp": "2026-04-19T08:08:49.887Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "web_search_call",
+          "input": {
+            "action": {
+              "queries": [
+                "site:developers.home-assistant.io runtime_data ConfigEntry Home Assistant integration docs",
+                "site:developers.home-assistant.io DataUpdateCoordinator best practice Home Assistant entities coordinatorentity",
+                "site:developers.home-assistant.io Home Assistant diagnostics custom integration docs"
+              ],
+              "query": "site:developers.home-assistant.io runtime_data ConfigEntry Home Assistant integration docs",
+              "type": "search"
+            },
+            "status": "completed",
+            "type": "web_search_call"
+          },
+          "timestamp": "2026-04-19T08:08:56.519Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "web_search_call",
+          "input": {
+            "action": {
+              "queries": [
+                "site:developers.home-assistant.io has_entity_name home assistant entity docs latest",
+                "site:developers.home-assistant.io async_setup_entry raise ConfigEntryNotReady home assistant socket integration"
+              ],
+              "query": "site:developers.home-assistant.io has_entity_name home assistant entity docs latest",
+              "type": "search"
+            },
+            "status": "completed",
+            "type": "web_search_call"
+          },
+          "timestamp": "2026-04-19T08:09:01.310Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "web_search_call",
+          "input": {
+            "action": {
+              "pattern": "integration_type",
+              "type": "find_in_page",
+              "url": "https://developers.home-assistant.io/docs/creating_integration_manifest"
+            },
+            "status": "completed",
+            "type": "web_search_call"
+          },
+          "timestamp": "2026-04-19T08:09:11.828Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我已经把当前代码和官方规范对过一轮，核心问题比较集中：现在有全局单例线程/调度器、同步 socket 阻塞事件循环、硬编码 IP、config flow 没有 unique ID/单实例约束、运行时状态没放到 `ConfigEntry.runtime_data`，这些都是升级到新版本 HA 时最容易出兼容或生命周期问题的地方。  \n在给你最终改造方案前，有两个取舍会直接影响“是否还能沿用 Node-RED 里现有设备引用”。",
+          "timestamp": "2026-04-19T08:09:18.017Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "request_user_input",
+          "input": {
+            "questions": [
+              {
+                "header": "迁移策略",
+                "id": "migration_strategy",
+                "options": [
+                  {
+                    "description": "优先保留现有实体 unique_id 和设备标识，必要时接受内部实现不完全按最理想模型重构。",
+                    "label": "保守兼容 (Recommended)"
+                  },
+                  {
+                    "description": "尽量保留实体标识，但允许调整设备注册模型，只要能给出迁移方案。",
+                    "label": "平衡重构"
+                  },
+                  {
+                    "description": "按最新 HA 最佳实践重做模型，允许设备/实体在注册表里被重新创建。",
+                    "label": "彻底重构"
+                  }
+                ],
+                "question": "这次改造你更偏向哪种迁移策略？"
+              },
+              {
+                "header": "网关数量",
+                "id": "gateway_topology",
+                "options": [
+                  {
+                    "description": "整个集成只连接一个云猫网关，所有灯和窗帘都挂在它下面。",
+                    "label": "单网关 (Recommended)"
+                  },
+                  {
+                    "description": "未来可能配置多个网关，需要设计成每个网关一个 config entry。",
+                    "label": "可能多网关"
+                  },
+                  {
+                    "description": "先按可扩展方案规划，但不强制这次就支持完整多网关。",
+                    "label": "不确定"
+                  }
+                ],
+                "question": "你的实际部署是怎样的？"
+              }
+            ]
+          },
+          "timestamp": "2026-04-19T08:09:22.511Z"
+        },
+        {
+          "type": "assistant",
+          "text": "<proposed_plan>\n# YunMao 集成升级与兼容改造方案\n\n## Summary\n目标是在兼容最新 Home Assistant 集成要求的前提下，重构当前生命周期和通信模型，并尽量保留现有设备/实体标识，避免影响 Node-RED 既有引用。  \n默认采用：`单网关 + 保守兼容`。对外保持现有实体 `unique_id` 与设备注册标识不变；对内改为标准 `ConfigEntry + runtime_data + coordinator` 架构。\n\n## Key Changes\n- 将当前全局 `ym_singleton` 改为“每个 config entry 一个 runtime 对象”：\n  - 在 `__init__.py` 中创建 typed `ConfigEntry` 别名与 runtime dataclass。\n  - 用 `entry.runtime_data` 保存客户端、协调器、订阅/卸载回调，不再依赖 `hass.data` 挂临时状态。\n- 重写数据获取模型：\n  - 抽出 `client.py` 负责 TCP 请求/命令发送。\n  - 抽出 `coordinator.py`，用 `DataUpdateCoordinator` 做统一轮询和首次刷新。\n  - 所有阻塞式 socket 调用改为 asyncio 版本；若底层协议必须同步，则统一包进 executor，实体层不直接阻塞事件循环。\n- 重写实体模型：\n  - 增加 `entity.py` 基类，`light.py` / `cover.py` 继承 `CoordinatorEntity`。\n  - `unique_id` 继续沿用当前中文设备名，避免实体重建。\n  - `device_info.identifiers` 继续沿用当前 `(DOMAIN, 现有名称)`，避免设备注册表和 Node-RED 设备引用失效。\n  - 增加 `has_entity_name = True`，主实体可显式 `name = None` 或按保守策略保留现名，避免这次改名引发实体显示波动。\n- 重写 config flow：\n  - 改成“一个网关一个 config entry”，在 entry 下创建全部灯和窗帘实体。\n  - 使用网关稳定标识作为 config entry unique ID；若协议无法可靠读到网关标识，则先使用用户输入 IP 作为过渡 unique ID，并在后续发现真实 ID 时做 entry migration。\n  - `manifest.json` 增加 `single_config_entry: true`、`integration_type: \"hub\"`。\n- 生命周期与错误处理：\n  - `async_setup_entry` 先连通性检查，失败时抛 `ConfigEntryNotReady`。\n  - `async_unload_entry` 正确关闭 coordinator、socket 监听、后台任务。\n  - 删除导入时启动线程/调度器的模式，所有后台任务都由 HA 生命周期托管。\n- 质量补齐：\n  - 新增 `diagnostics.py`，导出脱敏后的 entry 数据、最近一次设备状态、连接信息。\n  - 清理硬编码 IP，全部从 config entry 读取。\n  - 统一日志与异常边界，避免裸 `except Exception` 吞错。\n\n## Public Interfaces / Compatibility\n- 保持不变：\n  - 实体 `unique_id`\n  - 设备 `identifiers`\n  - 设备中文名称\n- 允许变化：\n  - config entry 数量会从“多 entry 逐个设备创建”收敛为“单 entry 管理整网关”\n  - 内部模块结构会新增 `client.py` / `coordinator.py` / `entity.py` / `diagnostics.py`\n- 迁移策略：\n  - 若检测到旧 entry，启动迁移逻辑：读取旧 entry 中的设备配置，合并为单网关 entry，但实体层继续产出相同 `unique_id` 与相同 device identifier。\n  - 迁移失败时宁可保留旧实体，也不主动重建新设备。\n\n## Test Plan\n- 启动与迁移：\n  - 旧版本已配置环境升级后，不新增重复设备，不丢失现有实体，不改变 Node-RED 关联目标。\n  - 单网关首次接入可成功创建所有 light/cover 实体。\n- 生命周期：\n  - 重载集成后无残留线程、无重复监听端口、无重复轮询任务。\n  - 网关离线时 entry 进入 `ConfigEntryNotReady` 重试路径，而不是卡死或报同步阻塞。\n- 行为：\n  - 灯开/关、双路灯同步、窗帘开/关/停/定位均正常。\n  - 网关主动推送更新时，实体状态可刷新；轮询与推送并存时状态一致。\n- 质量：\n  - `python -m compileall custom_components/yunmao` 通过。\n  - 在本地 Home Assistant dev 环境跑 `hassfest` 与基础集成测试。\n  - diagnostics 导出不包含真实 IP、MAC、设备名原文。\n\n## Assumptions\n- 当前只需要支持一个云猫网关。\n- Node-RED 依赖的是现有 Home Assistant 设备/实体注册结果，因此本次以“注册表稳定”优先于“纯最佳实践命名”。\n- 若官方规范与兼容目标冲突，优先保留现有 `unique_id` / `device identifiers`，其余部分按官方模式升级。\n- 参考的官方要求主要来自：\n  - Config flow: https://developers.home-assistant.io/docs/config_entries_config_flow_handler/\n  - Manifest: https://developers.home-assistant.io/docs/creating_integration_manifest/\n  - Fetching data / coordinator: https://developers.home-assistant.io/docs/integration_fetching_data/\n  - runtime_data: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/runtime-data/\n  - setup failures: https://developers.home-assistant.io/docs/integration_setup_failures/\n</proposed_plan>",
+          "timestamp": "2026-04-19T08:10:14.922Z"
+        },
+        {
+          "type": "user",
+          "text": "Implement the plan.",
+          "timestamp": "2026-04-19T08:10:47.460Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我会先按 Home Assistant 当前官方文档核对关键接口，再在仓库里做结构化重构：把全局单例/阻塞 socket 改成 `runtime_data + coordinator + client`，同时尽量保持现有实体和设备标识不变。",
+          "timestamp": "2026-04-19T08:10:58.849Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "update_plan",
+          "input": {
+            "plan": [
+              {
+                "status": "in_progress",
+                "step": "Review current Home Assistant integration requirements and confirm exact APIs to target"
+              },
+              {
+                "status": "pending",
+                "step": "Refactor integration architecture to ConfigEntry runtime_data + client/coordinator/entities while preserving identifiers"
+              },
+              {
+                "status": "pending",
+                "step": "Add migration, diagnostics, and manifest/config-flow updates for latest HA compatibility"
+              },
+              {
+                "status": "pending",
+                "step": "Run syntax/verification checks and summarize outcomes/remaining risks"
+              }
+            ]
+          },
+          "timestamp": "2026-04-19T08:11:00.115Z"
+        },
+        {
+          "type": "assistant",
+          "text": "使用 `karpathy-guidelines`，因为这次是一次兼容性重构，关键是做外科式改造、显式约束兼容边界，并用可验证的检查收口。",
+          "timestamp": "2026-04-19T08:11:07.240Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' /Users/caishili/.codex/skills/karpathy-guidelines/SKILL.md",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:11:07.240Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' custom_components/yunmao/manifest.json",
+            "max_output_tokens": 2000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:11:07.240Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git status --short",
+            "max_output_tokens": 2000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:11:07.355Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "web_search_call",
+          "input": {
+            "action": {
+              "queries": [
+                "site:developers.home-assistant.io ConfigEntry runtime_data Home Assistant integration rule",
+                "site:developers.home-assistant.io Home Assistant DataUpdateCoordinator docs custom integration",
+                "site:developers.home-assistant.io Home Assistant diagnostics custom integration docs",
+                "site:developers.home-assistant.io Home Assistant manifest single_config_entry integration_type docs"
+              ],
+              "query": "site:developers.home-assistant.io ConfigEntry runtime_data Home Assistant integration rule",
+              "type": "search"
+            },
+            "status": "completed",
+            "type": "web_search_call"
+          },
+          "timestamp": "2026-04-19T08:11:15.636Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "web_search_call",
+          "input": {
+            "action": {
+              "type": "open_page",
+              "url": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/runtime-data/"
+            },
+            "status": "completed",
+            "type": "web_search_call"
+          },
+          "timestamp": "2026-04-19T08:11:18.366Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "web_search_call",
+          "input": {
+            "action": {
+              "queries": [
+                "site:developers.home-assistant.io entities use has_entity_name = true Home Assistant docs",
+                "site:developers.home-assistant.io test during integration initialization able to set it up correctly ConfigEntryNotReady Home Assistant",
+                "site:developers.home-assistant.io unique id device identifiers entity registry Home Assistant docs"
+              ],
+              "query": "site:developers.home-assistant.io entities use has_entity_name = true Home Assistant docs",
+              "type": "search"
+            },
+            "status": "completed",
+            "type": "web_search_call"
+          },
+          "timestamp": "2026-04-19T08:11:21.916Z"
+        },
+        {
+          "type": "assistant",
+          "text": "开始落代码了。这次改动会把接入层拆成 `client/coordinator/entity/diagnostics`，同时保留现有中文 `unique_id` 和 `DeviceInfo.identifiers`，避免把 Node-RED 现有引用打断。",
+          "timestamp": "2026-04-19T08:14:54.101Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Delete File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/yunmao_data.py\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:14:54.613Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/const.py\n@@\n-DOMAIN = \"yunmao\"\n-\n-CONF_PLATFORM = \"platform\"\n-CONF_INPUT_IP = \"input_ip\"\n-CONF_NAME = \"name\"\n-CONF_MAC = \"mac\"\n-CONF_POS = \"pos\"\n-CONF_MAC2 = \"mac2\"\n-CONF_POS2 = \"pos2\"\n+\"\"\"Constants for the Yun Mao integration.\"\"\"\n+\n+from __future__ import annotations\n+\n+from collections.abc import Mapping\n+from dataclasses import dataclass\n+from typing import Any\n+\n+from homeassistant.const import Platform\n+\n+DOMAIN = \"yunmao\"\n+\n+CONF_PLATFORM = \"platform\"\n+CONF_INPUT_IP = \"input_ip\"\n+CONF_NAME = \"name\"\n+CONF_MAC = \"mac\"\n+CONF_POS = \"pos\"\n+CONF_MAC2 = \"mac2\"\n+CONF_POS2 = \"pos2\"\n+\n+DEFAULT_POLL_INTERVAL = 30\n+GATEWAY_PORT = 8888\n+PUSH_PORT = 21688\n+CONFIG_ENTRY_UNIQUE_ID = DOMAIN\n+\n+\n+@dataclass(frozen=True, slots=True)\n+class YunMaoLightDescription:\n+    \"\"\"Static description of a Yun Mao light entity.\"\"\"\n+\n+    name: str\n+    primary_mac: str\n+    primary_pos: int\n+    secondary_mac: str | None = None\n+    secondary_pos: int | None = None\n+    model: str = \"switch-pln\"\n+\n+    @property\n+    def unique_id(self) -> str:\n+        \"\"\"Return the entity unique id.\"\"\"\n+        return self.name\n+\n+    @property\n+    def device_identifier(self) -> str:\n+        \"\"\"Return the device registry identifier.\"\"\"\n+        return self.name\n+\n+\n+@dataclass(frozen=True, slots=True)\n+class YunMaoCoverDescription:\n+    \"\"\"Static description of a Yun Mao cover entity.\"\"\"\n+\n+    name: str\n+    mac: str\n+    model: str = \"covern\"\n+\n+    @property\n+    def unique_id(self) -> str:\n+        \"\"\"Return the entity unique id.\"\"\"\n+        return self.name\n+\n+    @property\n+    def device_identifier(self) -> str:\n+        \"\"\"Return the device registry identifier.\"\"\"\n+        return self.name\n+\n+\n+LIGHT_DESCRIPTIONS: tuple[YunMaoLightDescription, ...] = (\n+    YunMaoLightDescription(\"灯带\", \"FFFF301B977B24F4\", 1, \"FFFF301B977B4D8E\", 4),\n+    YunMaoLightDescription(\"客射灯\", \"FFFF301B977B24F4\", 2, \"FFFF301B977B4D8E\", 5),\n+    YunMaoLightDescription(\"客主灯\", \"FFFF301B977B24F4\", 3, \"FFFF301B977B4D8E\", 6),\n+    YunMaoLightDescription(\"玄关灯\", \"FFFF301B977B4D8E\", 1, \"FFFF301B977B24F4\", 4),\n+    YunMaoLightDescription(\"鞋柜灯\", \"FFFF301B977B4D8E\", 2, \"FFFF301B977B24F4\", 5),\n+    YunMaoLightDescription(\"餐主灯\", \"FFFF301B977B4D8E\", 3, \"FFFF301B977B24F4\", 6),\n+    YunMaoLightDescription(\"厨房灯\", \"FFFF301B977B72F1\", 2),\n+    YunMaoLightDescription(\"阳台灯\", \"FFFF301B977B16ED\", 1),\n+    YunMaoLightDescription(\"客卫主灯\", \"FFFF301B977B549A\", 1),\n+    YunMaoLightDescription(\"客卫镜灯\", \"FFFF301B977B549A\", 2),\n+    YunMaoLightDescription(\"走廊灯\", \"FFFF301B977B549A\", 3),\n+    YunMaoLightDescription(\"主卫镜灯\", \"FFFF301B977943F9\", 1),\n+    YunMaoLightDescription(\"主卫主灯\", \"FFFF301B977943F9\", 2),\n+)\n+\n+COVER_DESCRIPTIONS: tuple[YunMaoCoverDescription, ...] = (\n+    YunMaoCoverDescription(\"窗帘\", \"00124B002471A560\"),\n+    YunMaoCoverDescription(\"纱帘\", \"00124B0024D9D179\"),\n+)\n+\n+PLATFORMS: tuple[Platform, ...] = (Platform.LIGHT, Platform.COVER)\n+\n+\n+def is_legacy_entry_data(entry_data: Mapping[str, Any]) -> bool:\n+    \"\"\"Return True if the config entry uses the legacy single-device shape.\"\"\"\n+\n+    return CONF_PLATFORM in entry_data and CONF_NAME in entry_data\n+\n+\n+def get_light_descriptions(entry_data: Mapping[str, Any]) -> tuple[YunMaoLightDescription, ...]:\n+    \"\"\"Return all light descriptions for a config entry.\"\"\"\n+\n+    if not is_legacy_entry_data(entry_data):\n+        return LIGHT_DESCRIPTIONS\n+\n+    if entry_data[CONF_PLATFORM] != Platform.LIGHT:\n+        return ()\n+\n+    return (\n+        YunMaoLightDescription(\n+            name=entry_data[CONF_NAME],\n+            primary_mac=entry_data[CONF_MAC],\n+            primary_pos=int(entry_data[CONF_POS]),\n+            secondary_mac=entry_data.get(CONF_MAC2),\n+            secondary_pos=(\n+                int(entry_data[CONF_POS2]) if entry_data.get(CONF_POS2) is not None else None\n+            ),\n+        ),\n+    )\n+\n+\n+def get_cover_descriptions(entry_data: Mapping[str, Any]) -> tuple[YunMaoCoverDescription, ...]:\n+    \"\"\"Return all cover descriptions for a config entry.\"\"\"\n+\n+    if not is_legacy_entry_data(entry_data):\n+        return COVER_DESCRIPTIONS\n+\n+    if entry_data[CONF_PLATFORM] != Platform.COVER:\n+        return ()\n+\n+    return (\n+        YunMaoCoverDescription(\n+            name=entry_data[CONF_NAME],\n+            mac=entry_data[CONF_MAC],\n+        ),\n+    )\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:15:17.562Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Add File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/client.py\n+\"\"\"TCP client for Yun Mao gateways.\"\"\"\n+\n+from __future__ import annotations\n+\n+import asyncio\n+import json\n+from typing import Any\n+\n+from homeassistant.exceptions import HomeAssistantError\n+\n+from .const import GATEWAY_PORT\n+\n+COMMAND_SERIAL = \"210431\"\n+QUERY_ID = \"0000000000000000\"\n+\n+\n+class YunMaoClientError(HomeAssistantError):\n+    \"\"\"Base Yun Mao client error.\"\"\"\n+\n+\n+class YunMaoConnectionError(YunMaoClientError):\n+    \"\"\"Raised when the Yun Mao gateway is unavailable.\"\"\"\n+\n+\n+class YunMaoProtocolError(YunMaoClientError):\n+    \"\"\"Raised when the Yun Mao gateway response is invalid.\"\"\"\n+\n+\n+class YunMaoClient:\n+    \"\"\"Async Yun Mao TCP client.\"\"\"\n+\n+    def __init__(self, host: str) -> None:\n+        self.host = host\n+\n+    async def async_fetch_state(self) -> dict[str, Any]:\n+        \"\"\"Fetch the latest gateway state.\"\"\"\n+\n+        response = await self._async_request(\n+            {\n+                \"sourceId\": self.host,\n+                \"serialNum\": self.host,\n+                \"requestType\": \"query\",\n+                \"id\": QUERY_ID,\n+            },\n+            expect_response=True,\n+        )\n+        if response is None:\n+            raise YunMaoProtocolError(\"Missing Yun Mao gateway response\")\n+        return response\n+\n+    async def async_set_light_state(self, mac: str, pos: int, is_on: bool) -> None:\n+        \"\"\"Set a light channel state.\"\"\"\n+\n+        await self._async_request(\n+            {\n+                \"sourceId\": self.host,\n+                \"serialNum\": COMMAND_SERIAL,\n+                \"requestType\": \"cmd\",\n+                \"id\": mac,\n+                \"attributes\": {f\"KY{pos}\": \"ON\" if is_on else \"OFF\"},\n+            },\n+            expect_response=False,\n+        )\n+\n+    async def async_set_cover_status(self, mac: str, status: str) -> None:\n+        \"\"\"Set a cover status command.\"\"\"\n+\n+        await self._async_request(\n+            {\n+                \"sourceId\": self.host,\n+                \"serialNum\": COMMAND_SERIAL,\n+                \"requestType\": \"cmd\",\n+                \"id\": mac,\n+                \"attributes\": {\"WIN\": status},\n+            },\n+            expect_response=False,\n+        )\n+\n+    async def async_set_cover_position(self, mac: str, position: int) -> None:\n+        \"\"\"Set a cover target position.\"\"\"\n+\n+        await self._async_request(\n+            {\n+                \"sourceId\": self.host,\n+                \"serialNum\": COMMAND_SERIAL,\n+                \"requestType\": \"cmd\",\n+                \"id\": mac,\n+                \"attributes\": {\"LEV\": str(position)},\n+            },\n+            expect_response=False,\n+        )\n+\n+    async def _async_request(\n+        self, payload: dict[str, Any], expect_response: bool\n+    ) -> dict[str, Any] | None:\n+        \"\"\"Send a request to the gateway.\"\"\"\n+\n+        try:\n+            reader, writer = await asyncio.wait_for(\n+                asyncio.open_connection(host=self.host, port=GATEWAY_PORT), timeout=5\n+            )\n+        except (asyncio.TimeoutError, OSError) as err:\n+            raise YunMaoConnectionError(\"Unable to connect to the Yun Mao gateway\") from err\n+\n+        try:\n+            writer.write(json.dumps(payload, separators=(\",\", \":\")).encode(\"utf-8\"))\n+            await asyncio.wait_for(writer.drain(), timeout=5)\n+\n+            if writer.can_write_eof():\n+                writer.write_eof()\n+\n+            if not expect_response:\n+                return None\n+\n+            response = await self._async_read_response(reader)\n+            try:\n+                decoded = json.loads(response.decode(\"utf-8\"))\n+            except json.JSONDecodeError as err:\n+                raise YunMaoProtocolError(\"Invalid response from the Yun Mao gateway\") from err\n+\n+            if not isinstance(decoded, dict):\n+                raise YunMaoProtocolError(\"Unexpected response type from the Yun Mao gateway\")\n+\n+            return decoded\n+        except asyncio.TimeoutError as err:\n+            raise YunMaoConnectionError(\"Timed out while talking to the Yun Mao gateway\") from err\n+        finally:\n+            writer.close()\n+            try:\n+                await writer.wait_closed()\n+            except ConnectionError:\n+                pass\n+\n+    async def _async_read_response(self, reader: asyncio.StreamReader) -> bytes:\n+        \"\"\"Read the full response body from the gateway.\"\"\"\n+\n+        payload = bytearray()\n+\n+        while True:\n+            chunk = await asyncio.wait_for(reader.read(8192), timeout=5)\n+            if not chunk:\n+                break\n+            payload.extend(chunk)\n+\n+        if not payload:\n+            raise YunMaoProtocolError(\"Empty response from the Yun Mao gateway\")\n+\n+        return bytes(payload)\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:15:35.144Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Add File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/coordinator.py\n+\"\"\"Coordinators and push listener management for Yun Mao.\"\"\"\n+\n+from __future__ import annotations\n+\n+import asyncio\n+import json\n+import logging\n+from collections.abc import Callable\n+from dataclasses import dataclass, field\n+from datetime import timedelta\n+from time import monotonic\n+from typing import Any\n+\n+from homeassistant.config_entries import ConfigEntry\n+from homeassistant.core import HomeAssistant, callback\n+from homeassistant.exceptions import HomeAssistantError\n+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed\n+\n+from .client import YunMaoClient, YunMaoClientError\n+from .const import (\n+    DEFAULT_POLL_INTERVAL,\n+    DOMAIN,\n+    PUSH_PORT,\n+    YunMaoCoverDescription,\n+    YunMaoLightDescription,\n+    get_cover_descriptions,\n+    get_light_descriptions,\n+)\n+\n+_LOGGER = logging.getLogger(__name__)\n+_PUSH_SERVER = \"push_server\"\n+_MOTION_WINDOW_SECONDS = 4\n+\n+PushListener = Callable[[dict[str, Any]], None]\n+\n+\n+@dataclass(frozen=True, slots=True)\n+class YunMaoCoordinatorData:\n+    \"\"\"Raw gateway state cached by the coordinator.\"\"\"\n+\n+    switch_states: dict[str, int] = field(default_factory=dict)\n+    cover_states: dict[str, str] = field(default_factory=dict)\n+\n+\n+@dataclass(frozen=True, slots=True)\n+class YunMaoCoverState:\n+    \"\"\"Derived cover state exposed to entities.\"\"\"\n+\n+    current_position: int\n+    is_closed: bool\n+    is_opening: bool\n+    is_closing: bool\n+\n+\n+@dataclass(slots=True)\n+class YunMaoRuntimeData:\n+    \"\"\"Runtime data attached to a config entry.\"\"\"\n+\n+    client: YunMaoClient\n+    coordinator: \"YunMaoCoordinator\"\n+\n+\n+YunMaoConfigEntry = ConfigEntry[YunMaoRuntimeData]\n+\n+\n+class YunMaoPushServer:\n+    \"\"\"Shared TCP listener used for gateway push updates.\"\"\"\n+\n+    def __init__(self, hass: HomeAssistant) -> None:\n+        self._hass = hass\n+        self._listeners: set[PushListener] = set()\n+        self._lock = asyncio.Lock()\n+        self._server: asyncio.AbstractServer | None = None\n+\n+    async def async_add_listener(self, listener: PushListener) -> Callable[[], None]:\n+        \"\"\"Register a push listener and start the server when needed.\"\"\"\n+\n+        async with self._lock:\n+            self._listeners.add(listener)\n+            if self._server is None:\n+                await self._async_start_locked()\n+\n+        @callback\n+        def remove_listener() -> None:\n+            self._listeners.discard(listener)\n+            if not self._listeners:\n+                self._hass.async_create_task(self.async_stop())\n+\n+        return remove_listener\n+\n+    async def async_stop(self) -> None:\n+        \"\"\"Stop the shared push server if it is no longer needed.\"\"\"\n+\n+        async with self._lock:\n+            if self._listeners or self._server is None:\n+                return\n+\n+            self._server.close()\n+            await self._server.wait_closed()\n+            self._server = None\n+\n+    async def _async_start_locked(self) -> None:\n+        \"\"\"Start the push server while holding the lock.\"\"\"\n+\n+        try:\n+            self._server = await asyncio.start_server(\n+                self._async_handle_client, host=\"0.0.0.0\", port=PUSH_PORT\n+            )\n+        except OSError as err:\n+            _LOGGER.warning(\n+                \"Unable to bind Yun Mao push listener on port %s, polling fallback will be used: %s\",\n+                PUSH_PORT,\n+                err,\n+            )\n+            self._server = None\n+\n+    async def _async_handle_client(\n+        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter\n+    ) -> None:\n+        \"\"\"Handle a gateway push connection.\"\"\"\n+\n+        buffer = \"\"\n+\n+        try:\n+            while True:\n+                data = await asyncio.wait_for(reader.read(8192), timeout=120)\n+                if not data:\n+                    break\n+\n+                buffer += data.decode(\"utf-8\", errors=\"ignore\")\n+                buffer = self._process_buffer(buffer)\n+        except asyncio.TimeoutError:\n+            _LOGGER.debug(\"Closing idle Yun Mao push connection\")\n+        except OSError as err:\n+            _LOGGER.debug(\"Yun Mao push connection closed: %s\", err)\n+        finally:\n+            if buffer.strip():\n+                self._dispatch_line(buffer.strip())\n+            writer.close()\n+            await writer.wait_closed()\n+\n+    def _process_buffer(self, buffer: str) -> str:\n+        \"\"\"Process any complete lines buffered from the TCP stream.\"\"\"\n+\n+        while \"\\n\" in buffer:\n+            line, buffer = buffer.split(\"\\n\", 1)\n+            line = line.strip()\n+            if line:\n+                self._dispatch_line(line)\n+\n+        return buffer\n+\n+    def _dispatch_line(self, line: str) -> None:\n+        \"\"\"Dispatch a single JSON payload to registered listeners.\"\"\"\n+\n+        try:\n+            payload = json.loads(line)\n+        except json.JSONDecodeError:\n+            _LOGGER.debug(\"Ignoring invalid Yun Mao push payload: %s\", line)\n+            return\n+\n+        if not isinstance(payload, dict):\n+            return\n+\n+        for listener in tuple(self._listeners):\n+            try:\n+                listener(payload)\n+            except Exception:  # noqa: BLE001\n+                _LOGGER.exception(\"Unhandled Yun Mao push listener error\")\n+\n+\n+def async_get_push_server(hass: HomeAssistant) -> YunMaoPushServer:\n+    \"\"\"Return the shared Yun Mao push server.\"\"\"\n+\n+    domain_data = hass.data.setdefault(DOMAIN, {})\n+\n+    if _PUSH_SERVER not in domain_data:\n+        domain_data[_PUSH_SERVER] = YunMaoPushServer(hass)\n+\n+    return domain_data[_PUSH_SERVER]\n+\n+\n+class YunMaoCoordinator(DataUpdateCoordinator[YunMaoCoordinatorData]):\n+    \"\"\"Coordinate Yun Mao gateway state updates.\"\"\"\n+\n+    def __init__(\n+        self,\n+        hass: HomeAssistant,\n+        client: YunMaoClient,\n+        entry_data: dict[str, Any],\n+    ) -> None:\n+        self.client = client\n+        self.light_descriptions = get_light_descriptions(entry_data)\n+        self.cover_descriptions = get_cover_descriptions(entry_data)\n+        self._known_light_macs = {\n+            desc.primary_mac for desc in self.light_descriptions\n+        } | {\n+            desc.secondary_mac\n+            for desc in self.light_descriptions\n+            if desc.secondary_mac is not None\n+        }\n+        self._known_cover_macs = {desc.mac for desc in self.cover_descriptions}\n+        self._cover_positions: dict[str, int] = {\n+            desc.mac: 100 for desc in self.cover_descriptions\n+        }\n+        self._cover_motion_deadlines: dict[str, tuple[str, float]] = {}\n+\n+        super().__init__(\n+            hass,\n+            _LOGGER,\n+            name=f\"{DOMAIN}_{client.host}\",\n+            update_interval=timedelta(seconds=DEFAULT_POLL_INTERVAL),\n+        )\n+\n+    async def _async_update_data(self) -> YunMaoCoordinatorData:\n+        \"\"\"Fetch fresh state from the gateway.\"\"\"\n+\n+        try:\n+            return self._parse_query_payload(await self.client.async_fetch_state())\n+        except YunMaoClientError as err:\n+            raise UpdateFailed(str(err)) from err\n+\n+    def handle_push_payload(self, payload: dict[str, Any]) -> None:\n+        \"\"\"Merge gateway push data into the cached state.\"\"\"\n+\n+        if payload.get(\"requestType\") != \"update\":\n+            return\n+\n+        mac = payload.get(\"id\")\n+        attributes = payload.get(\"attributes\")\n+\n+        if not isinstance(mac, str) or not isinstance(attributes, dict):\n+            return\n+\n+        switch_states = dict(self.data.switch_states) if self.data else {}\n+        cover_states = dict(self.data.cover_states) if self.data else {}\n+        updated = False\n+\n+        if mac in self._known_light_macs and (raw_switch := attributes.get(\"SWI\")) is not None:\n+            try:\n+                switch_states[mac] = int(str(raw_switch), 0)\n+                updated = True\n+            except ValueError:\n+                _LOGGER.debug(\"Ignoring invalid light payload for %s: %s\", mac, raw_switch)\n+\n+        if mac in self._known_cover_macs and isinstance(attributes.get(\"WIN\"), str):\n+            status = attributes[\"WIN\"]\n+            cover_states[mac] = status\n+            self._update_cover_position_cache(mac, status)\n+            updated = True\n+\n+        if updated:\n+            self.async_set_updated_data(\n+                YunMaoCoordinatorData(\n+                    switch_states=switch_states,\n+                    cover_states=cover_states,\n+                )\n+            )\n+\n+    def is_light_on(self, description: YunMaoLightDescription) -> bool | None:\n+        \"\"\"Return the current logical light state.\"\"\"\n+\n+        if self.data is None:\n+            return None\n+\n+        values = [\n+            self._switch_bit_is_on(self.data.switch_states.get(description.primary_mac), description.primary_pos)\n+        ]\n+\n+        if description.secondary_mac is not None and description.secondary_pos is not None:\n+            values.append(\n+                self._switch_bit_is_on(\n+                    self.data.switch_states.get(description.secondary_mac),\n+                    description.secondary_pos,\n+                )\n+            )\n+\n+        known_values = [value for value in values if value is not None]\n+        if not known_values:\n+            return None\n+\n+        return any(known_values)\n+\n+    def get_cover_state(self, description: YunMaoCoverDescription) -> YunMaoCoverState:\n+        \"\"\"Return the derived cover state for an entity.\"\"\"\n+\n+        status = self.data.cover_states.get(description.mac) if self.data else None\n+        position = self._cover_positions.get(description.mac, 50)\n+\n+        if status == \"OPEN\":\n+            position = 100\n+        elif status == \"CLOSE\":\n+            position = 0\n+        elif status == \"STOP\" and description.mac not in self._cover_positions:\n+            position = 50\n+\n+        is_opening, is_closing = self._get_cover_motion(description.mac)\n+\n+        return YunMaoCoverState(\n+            current_position=position,\n+            is_closed=position == 0,\n+            is_opening=is_opening,\n+            is_closing=is_closing,\n+        )\n+\n+    async def async_set_light_state(\n+        self, description: YunMaoLightDescription, is_on: bool\n+    ) -> None:\n+        \"\"\"Send a light command and update local state optimistically.\"\"\"\n+\n+        try:\n+            await self.client.async_set_light_state(\n+                description.primary_mac, description.primary_pos, is_on\n+            )\n+            if description.secondary_mac is not None and description.secondary_pos is not None:\n+                await self.client.async_set_light_state(\n+                    description.secondary_mac, description.secondary_pos, is_on\n+                )\n+        except YunMaoClientError as err:\n+            raise HomeAssistantError(str(err)) from err\n+\n+        if self.data is None:\n+            return\n+\n+        switch_states = dict(self.data.switch_states)\n+        switch_states[description.primary_mac] = self._set_switch_bit(\n+            switch_states.get(description.primary_mac, 0),\n+            description.primary_pos,\n+            is_on,\n+        )\n+\n+        if description.secondary_mac is not None and description.secondary_pos is not None:\n+            switch_states[description.secondary_mac] = self._set_switch_bit(\n+                switch_states.get(description.secondary_mac, 0),\n+                description.secondary_pos,\n+                is_on,\n+            )\n+\n+        self.async_set_updated_data(\n+            YunMaoCoordinatorData(\n+                switch_states=switch_states,\n+                cover_states=dict(self.data.cover_states),\n+            )\n+        )\n+\n+    async def async_open_cover(self, description: YunMaoCoverDescription) -> None:\n+        \"\"\"Open a cover.\"\"\"\n+\n+        await self._async_set_cover_status(description, \"OPEN\")\n+        self._cover_positions[description.mac] = 100\n+        self._cover_motion_deadlines[description.mac] = (\n+            \"opening\",\n+            monotonic() + _MOTION_WINDOW_SECONDS,\n+        )\n+\n+    async def async_close_cover(self, description: YunMaoCoverDescription) -> None:\n+        \"\"\"Close a cover.\"\"\"\n+\n+        await self._async_set_cover_status(description, \"CLOSE\")\n+        self._cover_positions[description.mac] = 0\n+        self._cover_motion_deadlines[description.mac] = (\n+            \"closing\",\n+            monotonic() + _MOTION_WINDOW_SECONDS,\n+        )\n+\n+    async def async_stop_cover(self, description: YunMaoCoverDescription) -> None:\n+        \"\"\"Stop a cover.\"\"\"\n+\n+        await self._async_set_cover_status(description, \"STOP\")\n+        self._cover_motion_deadlines.pop(description.mac, None)\n+        self._cover_positions.setdefault(description.mac, 50)\n+\n+    async def async_set_cover_position(\n+        self, description: YunMaoCoverDescription, position: int\n+    ) -> None:\n+        \"\"\"Set a cover target position.\"\"\"\n+\n+        try:\n+            await self.client.async_set_cover_position(description.mac, position)\n+        except YunMaoClientError as err:\n+            raise HomeAssistantError(str(err)) from err\n+\n+        current_position = self.get_cover_state(description).current_position\n+        if position > current_position:\n+            self._cover_motion_deadlines[description.mac] = (\n+                \"opening\",\n+                monotonic() + _MOTION_WINDOW_SECONDS,\n+            )\n+        elif position < current_position:\n+            self._cover_motion_deadlines[description.mac] = (\n+                \"closing\",\n+                monotonic() + _MOTION_WINDOW_SECONDS,\n+            )\n+        else:\n+            self._cover_motion_deadlines.pop(description.mac, None)\n+\n+        self._cover_positions[description.mac] = position\n+\n+        if self.data is None:\n+            return\n+\n+        cover_states = dict(self.data.cover_states)\n+        cover_states[description.mac] = \"STOP\"\n+        self.async_set_updated_data(\n+            YunMaoCoordinatorData(\n+                switch_states=dict(self.data.switch_states),\n+                cover_states=cover_states,\n+            )\n+        )\n+\n+    def diagnostics_data(self) -> dict[str, Any]:\n+        \"\"\"Return non-sensitive coordinator diagnostics.\"\"\"\n+\n+        return {\n+            \"host_reachable\": self.last_update_success,\n+            \"light_count\": len(self.light_descriptions),\n+            \"cover_count\": len(self.cover_descriptions),\n+            \"known_light_macs\": len(self._known_light_macs),\n+            \"known_cover_macs\": len(self._known_cover_macs),\n+            \"switch_state_count\": len(self.data.switch_states) if self.data else 0,\n+            \"cover_state_count\": len(self.data.cover_states) if self.data else 0,\n+        }\n+\n+    async def _async_set_cover_status(\n+        self, description: YunMaoCoverDescription, status: str\n+    ) -> None:\n+        \"\"\"Send a cover command and update local state optimistically.\"\"\"\n+\n+        try:\n+            await self.client.async_set_cover_status(description.mac, status)\n+        except YunMaoClientError as err:\n+            raise HomeAssistantError(str(err)) from err\n+\n+        if self.data is None:\n+            return\n+\n+        cover_states = dict(self.data.cover_states)\n+        cover_states[description.mac] = status\n+        self.async_set_updated_data(\n+            YunMaoCoordinatorData(\n+                switch_states=dict(self.data.switch_states),\n+                cover_states=cover_states,\n+            )\n+        )\n+\n+    def _parse_query_payload(self, payload: dict[str, Any]) -> YunMaoCoordinatorData:\n+        \"\"\"Parse the query response into cached raw state.\"\"\"\n+\n+        attributes = payload.get(\"attributes\")\n+        if not isinstance(attributes, dict):\n+            raise UpdateFailed(\"Yun Mao gateway response is missing attributes\")\n+\n+        switch_states = dict(self.data.switch_states) if self.data else {}\n+        cover_states = dict(self.data.cover_states) if self.data else {}\n+\n+        for mac, state in attributes.items():\n+            if not isinstance(mac, str) or not isinstance(state, dict):\n+                continue\n+\n+            if mac in self._known_light_macs and (raw_switch := state.get(\"SWI\")) is not None:\n+                try:\n+                    switch_states[mac] = int(str(raw_switch), 0)\n+                except ValueError:\n+                    _LOGGER.debug(\"Ignoring invalid switch value from gateway: %s\", raw_switch)\n+\n+            if mac in self._known_cover_macs and isinstance(state.get(\"WIN\"), str):\n+                status = state[\"WIN\"]\n+                cover_states[mac] = status\n+                self._update_cover_position_cache(mac, status)\n+\n+        return YunMaoCoordinatorData(\n+            switch_states=switch_states,\n+            cover_states=cover_states,\n+        )\n+\n+    def _get_cover_motion(self, mac: str) -> tuple[bool, bool]:\n+        \"\"\"Return transient cover movement flags.\"\"\"\n+\n+        motion = self._cover_motion_deadlines.get(mac)\n+        if motion is None:\n+            return False, False\n+\n+        direction, deadline = motion\n+        if deadline <= monotonic():\n+            self._cover_motion_deadlines.pop(mac, None)\n+            return False, False\n+\n+        return direction == \"opening\", direction == \"closing\"\n+\n+    def _update_cover_position_cache(self, mac: str, status: str) -> None:\n+        \"\"\"Keep the optimistic cover position in sync with coarse status updates.\"\"\"\n+\n+        if status == \"OPEN\":\n+            self._cover_positions[mac] = 100\n+            self._cover_motion_deadlines.pop(mac, None)\n+        elif status == \"CLOSE\":\n+            self._cover_positions[mac] = 0\n+            self._cover_motion_deadlines.pop(mac, None)\n+        elif status == \"STOP\":\n+            self._cover_motion_deadlines.pop(mac, None)\n+            self._cover_positions.setdefault(mac, 50)\n+\n+    @staticmethod\n+    def _switch_bit_is_on(status: int | None, pos: int) -> bool | None:\n+        \"\"\"Return the value of a single switch bit.\"\"\"\n+\n+        if status is None:\n+            return None\n+        return bool((status >> (pos - 1)) & 1)\n+\n+    @staticmethod\n+    def _set_switch_bit(status: int, pos: int, is_on: bool) -> int:\n+        \"\"\"Set or clear a single switch bit.\"\"\"\n+\n+        mask = 1 << (pos - 1)\n+        if is_on:\n+            return status | mask\n+        return status & ~mask\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:16:28.113Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Add File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/entity.py\n+\"\"\"Shared entity helpers for Yun Mao.\"\"\"\n+\n+from __future__ import annotations\n+\n+from homeassistant.helpers.entity import DeviceInfo\n+from homeassistant.helpers.update_coordinator import CoordinatorEntity\n+\n+from .const import DOMAIN, YunMaoCoverDescription, YunMaoLightDescription\n+from .coordinator import YunMaoCoordinator\n+\n+\n+class YunMaoEntity(\n+    CoordinatorEntity[YunMaoCoordinator],\n+):\n+    \"\"\"Base entity for Yun Mao devices.\"\"\"\n+\n+    _attr_has_entity_name = True\n+    _attr_name = None\n+\n+    def __init__(\n+        self,\n+        coordinator: YunMaoCoordinator,\n+        description: YunMaoLightDescription | YunMaoCoverDescription,\n+    ) -> None:\n+        super().__init__(coordinator)\n+        self.description = description\n+        self._attr_unique_id = description.unique_id\n+        self._attr_device_info = DeviceInfo(\n+            identifiers={(DOMAIN, description.device_identifier)},\n+            manufacturer=\"lierda-new\",\n+            model=description.model,\n+            name=description.name,\n+        )\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:16:34.049Z"
+        },
+        {
+          "type": "assistant",
+          "text": "主体结构已经拆出来了。现在在把平台文件接到新 coordinator 上，同时保留旧 entry 数据格式的兼容分支，这样老安装不会因为配置形态变化直接失效。",
+          "timestamp": "2026-04-19T08:16:38.700Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/light.py\n@@\n-import logging\n-import socket\n-from typing import Any\n-\n-from homeassistant import config_entries\n-from homeassistant.components.light import ColorMode, LightEntity\n-from homeassistant.config_entries import ConfigEntry\n-from homeassistant.const import Platform\n-from homeassistant.core import HomeAssistant\n-from homeassistant.helpers.entity import DeviceInfo\n-from homeassistant.helpers.entity_platform import AddEntitiesCallback\n-\n-from .const import (\n-    CONF_INPUT_IP,\n-    CONF_MAC,\n-    CONF_MAC2,\n-    CONF_NAME,\n-    CONF_PLATFORM,\n-    CONF_POS,\n-    CONF_POS2,\n-    DOMAIN,\n-)\n-\n-_LOGGER = logging.getLogger(__name__)\n+\"\"\"Light platform for Yun Mao.\"\"\"\n+\n+from __future__ import annotations\n+\n+from typing import Any\n+\n+from homeassistant.components.light import ColorMode, LightEntity\n+from homeassistant.core import HomeAssistant\n+from homeassistant.helpers.entity_platform import AddEntitiesCallback\n+\n+from .coordinator import YunMaoConfigEntry\n+from .entity import YunMaoEntity\n \n \n async def async_setup_entry(\n     hass: HomeAssistant,\n-    config_entry: ConfigEntry,\n+    entry: YunMaoConfigEntry,\n     async_add_entities: AddEntitiesCallback,\n ) -> None:\n-    \"\"\"Setup sensors from a config entry created in the integrations UI.\"\"\"\n-    if config_entry.data[CONF_PLATFORM] != Platform.LIGHT:\n-        _LOGGER.warning(\n-            \"config_entry.data[CONF_PLATFORM] != Platform.LIGHT %s\", config_entry.data\n-        )\n+    \"\"\"Set up Yun Mao light entities.\"\"\"\n+\n+    del hass\n+\n+    if not entry.runtime_data.coordinator.light_descriptions:\n         return\n-    config = hass.data[DOMAIN][config_entry.entry_id]\n-    # Update our config to include new repos and remove those that have been removed.\n-    if config_entry.options:\n-        config.update(config_entry.options)\n-    lights = [YunMaoLight(config_entry)]\n-    async_add_entities(lights, update_before_add=True)\n \n-\n-class YunMaoLight(LightEntity):\n+    async_add_entities(\n+        YunMaoLight(entry.runtime_data.coordinator, description)\n+        for description in entry.runtime_data.coordinator.light_descriptions\n+    )\n+\n+\n+class YunMaoLight(YunMaoEntity, LightEntity):\n+    \"\"\"Representation of a Yun Mao light.\"\"\"\n+\n     _attr_color_mode = ColorMode.ONOFF\n-    _attr_supported_color_modes = ColorMode.ONOFF\n-\n-    def __init__(self, entry: config_entries.ConfigEntry):\n-        self._ip_addr = entry.data[CONF_INPUT_IP]\n-        self._name = entry.data[CONF_NAME]\n-        self._mac = entry.data[CONF_MAC]\n-        self._pos = entry.data[CONF_POS]\n-        self._mac2 = entry.data[CONF_MAC2]\n-        self._pos2 = entry.data[CONF_POS2]\n-        self.get_ym_singleton().add_light_entity(self)\n-\n-    @property\n-    def name(self) -> str | None:\n-        return self._name\n-\n-    @property\n-    def unique_id(self) -> str | None:\n-        return self._name\n-\n-    @property\n-    def device_info(self) -> DeviceInfo:\n-        \"\"\"Return the device info.\"\"\"\n-        device_info = DeviceInfo(\n-            identifiers={(DOMAIN, self.unique_id)},\n-            manufacturer=\"lierda-new\",\n-            model=\"switch-pln\",\n-            name=self._name,\n-        )\n-        return device_info\n-\n-    def turn_on(self, **kwargs: Any) -> None:\n-        self._set_light_is_on(self._mac, self._pos, True)\n-        if self._mac2 is not None:\n-            self._set_light_is_on(self._mac2, self._pos2, True)\n-\n-    def turn_off(self, **kwargs: Any) -> None:\n-        self._set_light_is_on(self._mac, self._pos, False)\n-        if self._mac2 is not None:\n-            self._set_light_is_on(self._mac2, self._pos2, False)\n-\n-    def _set_light_is_on(self, mac, pos, is_on):\n-        if is_on:\n-            body = (\n-                '{\"sourceId\":\"'\n-                + self._ip_addr\n-                + '\",\"serialNum\":\"210431\",\"requestType\":\"cmd\",\"id\":\"'\n-                + mac\n-                + '\",\"attributes\":{\"KY'\n-                + pos\n-                + '\":\"ON\"}}'\n-            )\n-        else:\n-            body = (\n-                '{\"sourceId\":\"'\n-                + self._ip_addr\n-                + '\",\"serialNum\":\"210431\",\"requestType\":\"cmd\",\"id\":\"'\n-                + mac\n-                + '\",\"attributes\":{\"KY'\n-                + pos\n-                + '\":\"OFF\"}}'\n-            )\n-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n-        s.settimeout(2)\n-        s.connect((self._ip_addr, 8888))\n-        s.sendall(body.encode())\n-        self._attr_is_on = is_on\n-\n-    def get_ym_singleton(self):\n-        from .yunmao_data import ym_singleton\n-        return ym_singleton\n+    _attr_supported_color_modes = {ColorMode.ONOFF}\n+\n+    @property\n+    def is_on(self) -> bool | None:\n+        \"\"\"Return whether the light is on.\"\"\"\n+\n+        return self.coordinator.is_light_on(self.description)\n+\n+    async def async_turn_on(self, **kwargs: Any) -> None:\n+        \"\"\"Turn the light on.\"\"\"\n+\n+        del kwargs\n+        await self.coordinator.async_set_light_state(self.description, True)\n+\n+    async def async_turn_off(self, **kwargs: Any) -> None:\n+        \"\"\"Turn the light off.\"\"\"\n+\n+        del kwargs\n+        await self.coordinator.async_set_light_state(self.description, False)\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:16:54.636Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/cover.py\n@@\n-from datetime import timedelta\n-import logging\n-import socket\n-import time\n-from typing import Any\n-\n-from homeassistant import config_entries\n+\"\"\"Cover platform for Yun Mao.\"\"\"\n+\n+from __future__ import annotations\n+\n+from typing import Any\n+\n from homeassistant.components.cover import (\n     ATTR_POSITION,\n     CoverDeviceClass,\n     CoverEntity,\n     CoverEntityFeature,\n )\n-from homeassistant.config_entries import ConfigEntry\n-from homeassistant.const import Platform\n from homeassistant.core import HomeAssistant\n-from homeassistant.helpers.entity import DeviceInfo\n from homeassistant.helpers.entity_platform import AddEntitiesCallback\n \n-from .const import CONF_INPUT_IP, CONF_MAC, CONF_NAME, CONF_PLATFORM, DOMAIN\n-\n-SCAN_INTERVAL = timedelta(seconds=5)\n-_LOGGER = logging.getLogger(__name__)\n+from .coordinator import YunMaoConfigEntry\n+from .entity import YunMaoEntity\n \n \n async def async_setup_entry(\n     hass: HomeAssistant,\n-    config_entry: ConfigEntry,\n+    entry: YunMaoConfigEntry,\n     async_add_entities: AddEntitiesCallback,\n ) -> None:\n-    \"\"\"Setup sensors from a config entry created in the integrations UI.\"\"\"\n-    if config_entry.data[CONF_PLATFORM] != Platform.COVER:\n-        _LOGGER.warning(\n-            \"config_entry.data[CONF_PLATFORM] != Platform.COVER %s\", config_entry.data\n-        )\n+    \"\"\"Set up Yun Mao cover entities.\"\"\"\n+\n+    del hass\n+\n+    if not entry.runtime_data.coordinator.cover_descriptions:\n         return\n-    config = hass.data[DOMAIN][config_entry.entry_id]\n-    # Update our config to include new repos and remove those that have been removed.\n-    if config_entry.options:\n-        config.update(config_entry.options)\n-    curtains = [YunMaoCurtain(config_entry)]\n-    async_add_entities(curtains, update_before_add=True)\n \n-\n-class YunMaoCurtain(CoverEntity):\n+    async_add_entities(\n+        YunMaoCurtain(entry.runtime_data.coordinator, description)\n+        for description in entry.runtime_data.coordinator.cover_descriptions\n+    )\n+\n+\n+class YunMaoCurtain(YunMaoEntity, CoverEntity):\n+    \"\"\"Representation of a Yun Mao curtain.\"\"\"\n+\n     _attr_device_class = CoverDeviceClass.CURTAIN\n     _attr_supported_features = (\n         CoverEntityFeature.OPEN\n         | CoverEntityFeature.CLOSE\n         | CoverEntityFeature.STOP\n         | CoverEntityFeature.SET_POSITION\n     )\n-    _attr_is_closed = False\n-    _attr_current_cover_position = 100\n-\n-    def __init__(self, entry: config_entries.ConfigEntry):\n-        self._ip_addr = entry.data[CONF_INPUT_IP]\n-        self._name = entry.data[CONF_NAME]\n-        self._mac = entry.data[CONF_MAC]\n-        self._last_open_time = 0\n-        self._last_close_time = 0\n-        self._attr_is_closed = False\n-        self._attr_current_cover_position = 100\n-        self.get_ym_singleton().add_cover_entity(self)\n-\n-    @property\n-    def name(self) -> str | None:\n-        return self._name\n-\n-    @property\n-    def unique_id(self) -> str | None:\n-        return self._name\n-\n-    @property\n-    def device_info(self) -> DeviceInfo:\n-        \"\"\"Return the device info.\"\"\"\n-        device_info = DeviceInfo(\n-            identifiers={(DOMAIN, self.unique_id)},\n-            manufacturer=\"lierda-new\",\n-            model=\"covern\",\n-            name=self._name,\n-        )\n-        return device_info\n \n     @property\n     def is_opening(self) -> bool | None:\n-        return time.time() - self._last_open_time <= 4\n+        \"\"\"Return whether the cover is opening.\"\"\"\n+\n+        return self.coordinator.get_cover_state(self.description).is_opening\n \n     @property\n     def is_closing(self) -> bool | None:\n-        return time.time() - self._last_close_time <= 4\n-\n-    def open_cover(self, **kwargs: Any) -> None:\n-        self._last_open_time = time.time()\n-        self._last_close_time = 0\n-        self._attr_is_closed = False\n-        self._attr_current_cover_position = 100\n-        self._set_cover_status(\"OPEN\")\n-\n-    def close_cover(self, **kwargs: Any) -> None:\n-        self._last_open_time = 0\n-        self._last_close_time = time.time()\n-        self._attr_is_closed = True\n-        self._attr_current_cover_position = 0\n-        self._set_cover_status(\"CLOSE\")\n-\n-    def stop_cover(self, **kwargs: Any) -> None:\n-        self._last_open_time = 0\n-        self._last_close_time = 0\n-        self._attr_is_closed = False\n-        self._attr_current_cover_position = 50\n-        self._set_cover_status(\"STOP\")\n-\n-    def _set_cover_status(self, status: str):\n-        body = (\n-            '{\"sourceId\":\"'\n-            + self._ip_addr\n-            + '\",\"serialNum\":\"210431\",\"requestType\":\"cmd\",\"id\":\"'\n-            + self._mac\n-            + '\",\"attributes\":{\"WIN\":\"'\n-            + status\n-            + '\"}}'\n-        )\n-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n-        s.connect((self._ip_addr, 8888))\n-        s.sendall(body.encode())\n-\n-    def set_cover_position(self, **kwargs: Any) -> None:\n-        position = kwargs.get(ATTR_POSITION)\n-        self._last_op_time = time.time()\n-        self._attr_is_closed = position == 0\n-        self._attr_current_cover_position = position\n-        body = (\n-            '{\"sourceId\":\"'\n-            + self._ip_addr\n-            + '\",\"serialNum\":\"210431\",\"requestType\":\"cmd\",\"id\":\"'\n-            + self._mac\n-            + '\",\"attributes\":{\"LEV\":\"'\n-            + str(position)\n-            + '\"}}'\n-        )\n-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n-        s.connect((self._ip_addr, 8888))\n-        s.sendall(body.encode())\n-\n-    def get_ym_singleton(self):\n-        from .yunmao_data import ym_singleton\n-        return ym_singleton\n+        \"\"\"Return whether the cover is closing.\"\"\"\n+\n+        return self.coordinator.get_cover_state(self.description).is_closing\n+\n+    @property\n+    def is_closed(self) -> bool | None:\n+        \"\"\"Return whether the cover is closed.\"\"\"\n+\n+        return self.coordinator.get_cover_state(self.description).is_closed\n+\n+    @property\n+    def current_cover_position(self) -> int | None:\n+        \"\"\"Return the current cover position.\"\"\"\n+\n+        return self.coordinator.get_cover_state(self.description).current_position\n+\n+    async def async_open_cover(self, **kwargs: Any) -> None:\n+        \"\"\"Open the cover.\"\"\"\n+\n+        del kwargs\n+        await self.coordinator.async_open_cover(self.description)\n+\n+    async def async_close_cover(self, **kwargs: Any) -> None:\n+        \"\"\"Close the cover.\"\"\"\n+\n+        del kwargs\n+        await self.coordinator.async_close_cover(self.description)\n+\n+    async def async_stop_cover(self, **kwargs: Any) -> None:\n+        \"\"\"Stop the cover.\"\"\"\n+\n+        del kwargs\n+        await self.coordinator.async_stop_cover(self.description)\n+\n+    async def async_set_cover_position(self, **kwargs: Any) -> None:\n+        \"\"\"Set the target cover position.\"\"\"\n+\n+        position = kwargs.get(ATTR_POSITION)\n+        if position is None:\n+            return\n+\n+        await self.coordinator.async_set_cover_position(self.description, position)\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:17:18.246Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/config_flow.py\n@@\n-import logging\n-import socket\n-from typing import Any, Dict, Optional\n+\"\"\"Config flow for Yun Mao.\"\"\"\n \n+from __future__ import annotations\n+\n+import ipaddress\n+from typing import Any\n+\n+from homeassistant import config_entries\n+from homeassistant.exceptions import HomeAssistantError\n import voluptuous as vol\n \n-from homeassistant import config_entries\n-from homeassistant.const import Platform\n-\n-from .const import (\n-    CONF_INPUT_IP,\n-    CONF_MAC,\n-    CONF_MAC2,\n-    CONF_NAME,\n-    CONF_PLATFORM,\n-    CONF_POS,\n-    CONF_POS2,\n-    DOMAIN,\n-)\n-\n-_LOGGER = logging.getLogger(__name__)\n-\n-IP_SCHEMA = vol.Schema({vol.Optional(CONF_INPUT_IP, default=\"192.168.88.118\"): str})\n-LIGHT_DEVICES = {\n-    \"灯带\": {\n-        CONF_MAC: \"FFFF301B977B24F4\",\n-        CONF_POS: \"1\",\n-        CONF_MAC2: \"FFFF301B977B4D8E\",\n-        CONF_POS2: \"4\",\n-    },\n-    \"客射灯\": {\n-        CONF_MAC: \"FFFF301B977B24F4\",\n-        CONF_POS: \"2\",\n-        CONF_MAC2: \"FFFF301B977B4D8E\",\n-        CONF_POS2: \"5\",\n-    },\n-    \"客主灯\": {\n-        CONF_MAC: \"FFFF301B977B24F4\",\n-        CONF_POS: \"3\",\n-        CONF_MAC2: \"FFFF301B977B4D8E\",\n-        CONF_POS2: \"6\",\n-    },\n-    \"玄关灯\": {\n-        CONF_MAC: \"FFFF301B977B4D8E\",\n-        CONF_POS: \"1\",\n-        CONF_MAC2: \"FFFF301B977B24F4\",\n-        CONF_POS2: \"4\",\n-    },\n-    \"鞋柜灯\": {\n-        CONF_MAC: \"FFFF301B977B4D8E\",\n-        CONF_POS: \"2\",\n-        CONF_MAC2: \"FFFF301B977B24F4\",\n-        CONF_POS2: \"5\",\n-    },\n-    \"餐主灯\": {\n-        CONF_MAC: \"FFFF301B977B4D8E\",\n-        CONF_POS: \"3\",\n-        CONF_MAC2: \"FFFF301B977B24F4\",\n-        CONF_POS2: \"6\",\n-    },\n-    \"厨房灯\": {\n-        CONF_MAC: \"FFFF301B977B72F1\",\n-        CONF_POS: \"2\",\n-        CONF_MAC2: None,\n-        CONF_POS2: None,\n-    },\n-    \"阳台灯\": {\n-        CONF_MAC: \"FFFF301B977B16ED\",\n-        CONF_POS: \"1\",\n-        CONF_MAC2: None,\n-        CONF_POS2: None,\n-    },\n-    \"客卫主灯\": {\n-        CONF_MAC: \"FFFF301B977B549A\",\n-        CONF_POS: \"1\",\n-        CONF_MAC2: None,\n-        CONF_POS2: None,\n-    },\n-    \"客卫镜灯\": {\n-        CONF_MAC: \"FFFF301B977B549A\",\n-        CONF_POS: \"2\",\n-        CONF_MAC2: None,\n-        CONF_POS2: None,\n-    },\n-    \"走廊灯\": {\n-        CONF_MAC: \"FFFF301B977B549A\",\n-        CONF_POS: \"3\",\n-        CONF_MAC2: None,\n-        CONF_POS2: None,\n-    },\n-    \"主卫镜灯\": {\n-        CONF_MAC: \"FFFF301B977943F9\",\n-        CONF_POS: \"1\",\n-        CONF_MAC2: None,\n-        CONF_POS2: None,\n-    },\n-    \"主卫主灯\": {\n-        CONF_MAC: \"FFFF301B977943F9\",\n-        CONF_POS: \"2\",\n-        CONF_MAC2: None,\n-        CONF_POS2: None,\n-    },\n-}\n-\n-CURTAIN_DEVICES = {\"窗帘\": \"00124B002471A560\", \"纱帘\": \"00124B0024D9D179\"}\n-\n-\n-class GithubCustomConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):\n-    \"\"\"Custom config flow.\"\"\"\n-\n-    data: Optional[Dict[str, Any]]\n-\n-    async def async_step_user(self, user_input: Optional[Dict[str, Any]] = None):\n-        \"\"\"Invoked when a user initiates a flow via the user interface.\"\"\"\n-        errors: Dict[str, str] = {}\n-        if user_input is not None:\n-            try:\n-                self._validate_ip_address(user_input[CONF_INPUT_IP])\n-            except ValueError:\n-                errors[\"base\"] = \"address_not_valid\"\n-            if not errors:\n-                # Input is valid, set data.\n-                self.data = None\n-                for name in LIGHT_DEVICES:\n-                    if self._already_configured(name):\n-                        continue\n-                    value = LIGHT_DEVICES[name]\n-                    self.data = {\n-                        CONF_PLATFORM: Platform.LIGHT,\n-                        CONF_INPUT_IP: user_input[CONF_INPUT_IP],\n-                        CONF_NAME: name,\n-                        CONF_MAC: value[CONF_MAC],\n-                        CONF_POS: value[CONF_POS],\n-                        CONF_MAC2: value[CONF_MAC2],\n-                        CONF_POS2: value[CONF_POS2],\n-                    }\n-                    break\n-\n-                if self.data is None:\n-                    for name in CURTAIN_DEVICES:\n-                        if self._already_configured(name):\n-                            continue\n-                        mac = CURTAIN_DEVICES[name]\n-                        self.data = {\n-                            CONF_PLATFORM: Platform.COVER,\n-                            CONF_INPUT_IP: user_input[CONF_INPUT_IP],\n-                            CONF_NAME: name,\n-                            CONF_MAC: mac,\n-                        }\n-                        break\n-\n-                if self.data is not None:\n-                    # Return the form of the next step.\n-                    return self.async_create_entry(\n-                        title=self.data[CONF_NAME], data=self.data\n-                    )\n-                else:\n-                    errors[\"base\"] = \"\"\n-\n-        return self.async_show_form(\n-            step_id=\"user\", data_schema=IP_SCHEMA, errors=errors\n-        )\n-\n-    def _already_configured(self, name):\n-        for entry in self._async_current_entries():\n-            if name == entry.data.get(CONF_NAME):\n-                return True\n-        return False\n-\n-    def _validate_ip_address(self, ip_address):\n-        try:\n-            socket.inet_aton(ip_address)\n-        except OSError:\n-            raise ValueError\n+from .client import YunMaoClient, YunMaoClientError\n+from .const import CONFIG_ENTRY_UNIQUE_ID, CONF_INPUT_IP, DOMAIN\n+\n+STEP_USER_DATA_SCHEMA = vol.Schema(\n+    {vol.Required(CONF_INPUT_IP, default=\"192.168.88.118\"): str}\n+)\n+\n+\n+class CannotConnect(HomeAssistantError):\n+    \"\"\"Error to indicate we cannot connect.\"\"\"\n+\n+\n+async def _async_validate_gateway(host: str) -> None:\n+    \"\"\"Validate that the gateway is reachable.\"\"\"\n+\n+    try:\n+        await YunMaoClient(host).async_fetch_state()\n+    except YunMaoClientError as err:\n+        raise CannotConnect from err\n+\n+\n+class YunMaoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):\n+    \"\"\"Config flow for Yun Mao.\"\"\"\n+\n+    VERSION = 1\n+\n+    async def async_step_user(\n+        self, user_input: dict[str, Any] | None = None\n+    ) -> config_entries.ConfigFlowResult:\n+        \"\"\"Handle the initial step.\"\"\"\n+\n+        errors: dict[str, str] = {}\n+\n+        if user_input is not None:\n+            host = user_input[CONF_INPUT_IP].strip()\n+\n+            try:\n+                ipaddress.ip_address(host)\n+            except ValueError:\n+                errors[\"base\"] = \"address_not_valid\"\n+            else:\n+                try:\n+                    await _async_validate_gateway(host)\n+                except CannotConnect:\n+                    errors[\"base\"] = \"cannot_connect\"\n+                else:\n+                    await self.async_set_unique_id(CONFIG_ENTRY_UNIQUE_ID)\n+                    self._abort_if_unique_id_configured()\n+                    return self.async_create_entry(title=\"Yun Mao\", data={CONF_INPUT_IP: host})\n+\n+        return self.async_show_form(\n+            step_id=\"user\",\n+            data_schema=STEP_USER_DATA_SCHEMA,\n+            errors=errors,\n+        )\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:17:43.896Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/__init__.py\n@@\n-\"\"\"Yun Mao Component.\"\"\"\n-\n-import logging\n-\n-from homeassistant import config_entries, core\n-from homeassistant.const import Platform\n-\n-from .const import CONF_PLATFORM, DOMAIN\n-\n-_LOGGER = logging.getLogger(__name__)\n-\n-PLATFORMS = [Platform.LIGHT, Platform.COVER]\n-\n-\n-async def async_setup_entry(\n-    hass: core.HomeAssistant, entry: config_entries.ConfigEntry\n-) -> bool:\n-    \"\"\"Set up platform from a ConfigEntry.\"\"\"\n-    hass.data.setdefault(DOMAIN, {})\n-    hass_data = dict(entry.data)\n-    # Registers update listener to update config entry when options are updated.\n-    unsub_options_update_listener = entry.add_update_listener(options_update_listener)\n-    # Store a reference to the unsubscribe function to cleanup if an entry is unloaded.\n-    hass_data[\"unsub_options_update_listener\"] = unsub_options_update_listener\n-    hass.data[DOMAIN][entry.entry_id] = hass_data\n-\n-    # Forward the setup to the sensor platform.\n-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)\n-    return True\n-\n-\n-async def options_update_listener(\n-    hass: core.HomeAssistant, config_entry: config_entries.ConfigEntry\n-):\n-    \"\"\"Handle options update.\"\"\"\n-    await hass.config_entries.async_reload(config_entry.entry_id)\n-\n-\n-async def async_unload_entry(\n-    hass: core.HomeAssistant, entry: config_entries.ConfigEntry\n-) -> bool:\n-    \"\"\"Unload a config entry.\"\"\"\n-    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):\n-        # Remove config entry from domain.\n-        entry_data = hass.data[DOMAIN].pop(entry.entry_id)\n-        # Remove options_update_listener.\n-        entry_data[\"unsub_options_update_listener\"]()\n-\n-    return unload_ok\n-\n-\n-async def async_setup(hass: core.HomeAssistant, config: dict) -> bool:\n-    \"\"\"Set up the GitHub Custom component from yaml configuration.\"\"\"\n-    hass.data.setdefault(DOMAIN, {})\n-    return True\n+\"\"\"The Yun Mao integration.\"\"\"\n+\n+from __future__ import annotations\n+\n+from homeassistant.core import HomeAssistant\n+\n+from .client import YunMaoClient\n+from .const import CONF_INPUT_IP, DOMAIN, PLATFORMS\n+from .coordinator import (\n+    YunMaoConfigEntry,\n+    YunMaoCoordinator,\n+    YunMaoRuntimeData,\n+    async_get_push_server,\n+)\n+\n+\n+async def async_setup(hass: HomeAssistant, config: dict) -> bool:\n+    \"\"\"Set up the Yun Mao integration.\"\"\"\n+\n+    del config\n+    hass.data.setdefault(DOMAIN, {})\n+    return True\n+\n+\n+async def async_setup_entry(hass: HomeAssistant, entry: YunMaoConfigEntry) -> bool:\n+    \"\"\"Set up Yun Mao from a config entry.\"\"\"\n+\n+    client = YunMaoClient(entry.data[CONF_INPUT_IP])\n+    coordinator = YunMaoCoordinator(hass, client, dict(entry.data))\n+    remove_push_listener = await async_get_push_server(hass).async_add_listener(\n+        coordinator.handle_push_payload\n+    )\n+\n+    entry.async_on_unload(remove_push_listener)\n+    entry.runtime_data = YunMaoRuntimeData(client=client, coordinator=coordinator)\n+\n+    await coordinator.async_config_entry_first_refresh()\n+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)\n+    return True\n+\n+\n+async def async_unload_entry(hass: HomeAssistant, entry: YunMaoConfigEntry) -> bool:\n+    \"\"\"Unload a Yun Mao config entry.\"\"\"\n+\n+    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:18:01.572Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Add File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/diagnostics.py\n+\"\"\"Diagnostics support for Yun Mao.\"\"\"\n+\n+from __future__ import annotations\n+\n+from typing import Any\n+\n+from homeassistant.components.diagnostics import async_redact_data\n+from homeassistant.core import HomeAssistant\n+\n+from .const import CONF_INPUT_IP, CONF_MAC, CONF_MAC2, CONF_NAME, DOMAIN\n+from .coordinator import YunMaoConfigEntry\n+\n+TO_REDACT = {CONF_INPUT_IP, CONF_MAC, CONF_MAC2, CONF_NAME}\n+\n+\n+async def async_get_config_entry_diagnostics(\n+    hass: HomeAssistant, entry: YunMaoConfigEntry\n+) -> dict[str, Any]:\n+    \"\"\"Return diagnostics for a config entry.\"\"\"\n+\n+    del hass\n+\n+    return {\n+        \"domain\": DOMAIN,\n+        \"entry\": async_redact_data(dict(entry.data), TO_REDACT),\n+        \"runtime\": entry.runtime_data.coordinator.diagnostics_data(),\n+    }\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:18:08.446Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/manifest.json\n@@\n {\n   \"domain\": \"yunmao\",\n   \"name\": \"Yun Mao\",\n   \"codeowners\": [\"@coderchoy\"],\n   \"config_flow\": true,\n-  \"dependencies\": [],\n   \"documentation\": \"https://www.home-assistant.io/integrations/yunmao\",\n-  \"homekit\": {},\n-  \"iot_class\": \"local_polling\",\n-  \"requirements\": [\"APScheduler==3.10.1\"],\n-  \"ssdp\": [],\n-  \"zeroconf\": [],\n-  \"version\": \"1.0.0\"\n+  \"integration_type\": \"hub\",\n+  \"iot_class\": \"local_push\",\n+  \"single_config_entry\": true,\n+  \"version\": \"2.0.0\"\n }\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:18:14.912Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/strings.json\n@@\n {\n   \"config\": {\n     \"error\": {\n-      \"address_not_valid\": \"IPv4 address not valid\"\n+      \"address_not_valid\": \"IPv4 address not valid\",\n+      \"cannot_connect\": \"Failed to connect to the gateway\"\n     },\n     \"step\": {\n       \"user\": {\n         \"data\": {\n@@\n     },\n     \"abort\": {\n       \"single_instance_allowed\": \"[%key:common::config_flow::abort::single_instance_allowed%]\",\n       \"no_devices_found\": \"[%key:common::config_flow::abort::no_devices_found%]\"\n     }\n   }\n }\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:18:22.057Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/translations/en.json\n@@\n         },\n         \"error\": {\n-            \"address_not_valid\": \"IPv4 address not valid\"\n+            \"address_not_valid\": \"IPv4 address not valid\",\n+            \"cannot_connect\": \"Failed to connect to the gateway\"\n         },\n         \"step\": {\n             \"user\": {\n                 \"data\": {\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:18:26.470Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我先做一轮静态校验，主要看有没有旧实现残留、导入错误或明显的生命周期问题，然后再补小修。",
+          "timestamp": "2026-04-19T08:18:50.190Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "rg -n \"yunmao_data|APScheduler|options_update_listener|hass\\.data\\[DOMAIN\\]\\[entry\\.entry_id\\]|socket\\.socket|threading|AsyncIOScheduler\" custom_components/yunmao",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:18:50.192Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "python -m compileall custom_components/yunmao",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:18:50.309Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git diff --stat",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:18:50.309Z"
+        },
+        {
+          "type": "assistant",
+          "text": "编译已经过了。现在我在做最后一轮代码审读，重点看新文件是否都被纳入、manifest/翻译是否有效，以及有没有明显会在 Home Assistant 运行时踩到的点。",
+          "timestamp": "2026-04-19T08:19:10.314Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git status --short",
+            "max_output_tokens": 2000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:10.314Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' custom_components/yunmao/coordinator.py",
+            "max_output_tokens": 6000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:10.440Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "python -m json.tool custom_components/yunmao/manifest.json",
+            "max_output_tokens": 2000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:10.441Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "python -m json.tool custom_components/yunmao/strings.json",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:10.441Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '261,520p' custom_components/yunmao/coordinator.py",
+            "max_output_tokens": 6000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:21.948Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' custom_components/yunmao/config_flow.py",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:21.948Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' custom_components/yunmao/light.py",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:22.072Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,240p' custom_components/yunmao/cover.py",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:22.072Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我补两个小修：一个是窗帘初始位置缓存别预置成全开，避免 `STOP` 状态被误判；另一个是 push 连接关闭时更稳一点，避免对端重置把 unload 流程打断。",
+          "timestamp": "2026-04-19T08:19:40.219Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/coordinator.py\n@@\n         self._known_light_macs = {\n             desc.primary_mac for desc in self.light_descriptions\n         } | {\n             desc.secondary_mac\n             for desc in self.light_descriptions\n             if desc.secondary_mac is not None\n         }\n         self._known_cover_macs = {desc.mac for desc in self.cover_descriptions}\n-        self._cover_positions: dict[str, int] = {\n-            desc.mac: 100 for desc in self.cover_descriptions\n-        }\n+        self._cover_positions: dict[str, int] = {}\n         self._cover_motion_deadlines: dict[str, tuple[str, float]] = {}\n@@\n         finally:\n             if buffer.strip():\n                 self._dispatch_line(buffer.strip())\n             writer.close()\n-            await writer.wait_closed()\n+            try:\n+                await writer.wait_closed()\n+            except ConnectionError:\n+                pass\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:19:42.457Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我在按运行时路径补稳健性修正，先定位精确代码块再落补丁。",
+          "timestamp": "2026-04-19T08:19:46.921Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '40,150p' custom_components/yunmao/coordinator.py",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:46.922Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '150,240p' custom_components/yunmao/coordinator.py",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:47.040Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/coordinator.py\n@@\n         except OSError as err:\n             _LOGGER.debug(\"Yun Mao push connection closed: %s\", err)\n         finally:\n             if buffer.strip():\n                 self._dispatch_line(buffer.strip())\n             writer.close()\n-            await writer.wait_closed()\n+            try:\n+                await writer.wait_closed()\n+            except ConnectionError:\n+                pass\n@@\n         } | {\n             desc.secondary_mac\n             for desc in self.light_descriptions\n             if desc.secondary_mac is not None\n         }\n         self._known_cover_macs = {desc.mac for desc in self.cover_descriptions}\n-        self._cover_positions: dict[str, int] = {\n-            desc.mac: 100 for desc in self.cover_descriptions\n-        }\n+        self._cover_positions: dict[str, int] = {}\n         self._cover_motion_deadlines: dict[str, tuple[str, float]] = {}\n*** End Patch\n",
+          "timestamp": "2026-04-19T08:19:53.028Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' custom_components/yunmao/__init__.py",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:59.206Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' custom_components/yunmao/entity.py",
+            "max_output_tokens": 2000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:59.207Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "python -m json.tool custom_components/yunmao/translations/en.json",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:59.271Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "python -m compileall custom_components/yunmao",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:19:59.271Z"
+        },
+        {
+          "type": "assistant",
+          "text": "实现已经成形，剩下是收口验证和把结果/限制说清楚。当前重点风险是：老用户如果还保留多条 legacy config entry，虽然能继续跑，但仍会有多 coordinator 并行轮询；这是我为了不动现有设备标识而保留的兼容分支。",
+          "timestamp": "2026-04-19T08:20:12.422Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "update_plan",
+          "input": {
+            "plan": [
+              {
+                "status": "completed",
+                "step": "Review current Home Assistant integration requirements and confirm exact APIs to target"
+              },
+              {
+                "status": "completed",
+                "step": "Refactor integration architecture to ConfigEntry runtime_data + client/coordinator/entities while preserving identifiers"
+              },
+              {
+                "status": "completed",
+                "step": "Add migration, diagnostics, and manifest/config-flow updates for latest HA compatibility"
+              },
+              {
+                "status": "in_progress",
+                "step": "Run syntax/verification checks and summarize outcomes/remaining risks"
+              }
+            ]
+          },
+          "timestamp": "2026-04-19T08:20:13.464Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我再尝试一个更贴近 Home Assistant 的校验：看看本机有没有 `hassfest` 环境可直接跑。如果没有，我会明确把这个缺口记在结果里。",
+          "timestamp": "2026-04-19T08:20:25.328Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "python -m script.hassfest",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:25.328Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/__init__.py | sed -n '1,220p'",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:25.329Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/config_flow.py | sed -n '1,220p'",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:25.462Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/coordinator.py | sed -n '1,320p'",
+            "max_output_tokens": 8000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:25.462Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/light.py | sed -n '1,220p'",
+            "max_output_tokens": 2500,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:25.462Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/cover.py | sed -n '1,260p'",
+            "max_output_tokens": 3500,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:25.462Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/manifest.json | sed -n '1,200p'",
+            "max_output_tokens": 1500,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:25.462Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/diagnostics.py | sed -n '1,200p'",
+            "max_output_tokens": 2000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:25.462Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我已经把能在当前环境做的校验跑完了；接下来只补充引用行号，方便你直接跳到关键改动点看实现。",
+          "timestamp": "2026-04-19T08:20:37.068Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/const.py | sed -n '1,260p'",
+            "max_output_tokens": 5000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:37.068Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/client.py | sed -n '1,260p'",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:37.254Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba custom_components/yunmao/entity.py | sed -n '1,200p'",
+            "max_output_tokens": 2500,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:20:37.254Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "update_plan",
+          "input": {
+            "plan": [
+              {
+                "status": "completed",
+                "step": "Review current Home Assistant integration requirements and confirm exact APIs to target"
+              },
+              {
+                "status": "completed",
+                "step": "Refactor integration architecture to ConfigEntry runtime_data + client/coordinator/entities while preserving identifiers"
+              },
+              {
+                "status": "completed",
+                "step": "Add migration, diagnostics, and manifest/config-flow updates for latest HA compatibility"
+              },
+              {
+                "status": "completed",
+                "step": "Run syntax/verification checks and summarize outcomes/remaining risks"
+              }
+            ]
+          },
+          "timestamp": "2026-04-19T08:20:41.328Z"
+        },
+        {
+          "type": "assistant",
+          "text": "已按“尽量保留现有设备/实体标识”的前提完成重构。\n\n核心改动在 [__init__.py](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/__init__.py:25), [coordinator.py](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/coordinator.py:66), [client.py](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/client.py:29)：去掉了全局单例、线程和阻塞式 `socket` 调用，改成 `ConfigEntry.runtime_data + DataUpdateCoordinator + async TCP client`，并保留了一个共享的 21688 push listener。实体层改到了 [entity.py](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/entity.py:12), [light.py](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/light.py:33), [cover.py](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/cover.py:38)；`unique_id` 和 `DeviceInfo.identifiers` 仍然沿用原来的中文设备名，尽量避免把 Node-RED 里已有引用打断。设备描述和 legacy entry 兼容逻辑放在了 [const.py](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/const.py:27)。\n\n接入和元数据也更新了：[config_flow.py](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/config_flow.py:33) 现在会先校验 IP 和网关连通性，再创建单一 config entry；[manifest.json](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/manifest.json:1) 增加了 `integration_type: \"hub\"`、`single_config_entry: true`，并移除了不再需要的 `APScheduler` 依赖；同时新增了 [diagnostics.py](/Users/caishili/Documents/Personal/yunmao/custom_components/yunmao/diagnostics.py:1) 和相应翻译文案。\n\n验证方面，`python -m compileall custom_components/yunmao` 通过，`manifest.json` / `strings.json` / `translations/en.json` JSON 也都校验通过。`python -m script.hassfest` 这台机器上跑不了，因为本地没有 Home Assistant 开发环境里的 `script` 模块。一个刻意保留的兼容选择是：老的“每个设备一个 config entry”安装方式仍然能跑，但不会自动强迁成单 entry，因为那样更容易引发设备/实体注册表变化；代价是老安装在未重建前仍会按 entry 数量并行轮询。\n\n这次实现主要对齐了 Home Assistant 当前官方要求：`runtime_data`、manifest 字段、diagnostics、config entry unloading、coordinator 初始化等。参考：\n- https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/runtime-data/\n- https://developers.home-assistant.io/docs/creating_integration_manifest/\n- https://developers.home-assistant.io/docs/core/integration_diagnostics/\n- https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/config-entry-unloading/\n- https://developers.home-assistant.io/docs/core/integration/config_flow/\n- https://developers.home-assistant.io/blog/2024/08/05/coordinator_async_setup/",
+          "timestamp": "2026-04-19T08:21:01.085Z"
+        },
+        {
+          "type": "user",
+          "text": "提交代码",
+          "timestamp": "2026-04-19T08:23:10.245Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我先核对工作区，只提交这次 Home Assistant 兼容改造相关的代码变更，避免把无关文件一起带进提交。",
+          "timestamp": "2026-04-19T08:23:19.263Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git status --short",
+            "max_output_tokens": 3000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:23:19.265Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git diff --stat -- custom_components/yunmao",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:23:19.265Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我会排除 `AGENTS.md`，只提交 `custom_components/yunmao` 下这次兼容性重构相关变更。",
+          "timestamp": "2026-04-19T08:23:23.700Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git add custom_components/yunmao/__init__.py custom_components/yunmao/config_flow.py custom_components/yunmao/const.py custom_components/yunmao/cover.py custom_components/yunmao/light.py custom_components/yunmao/manifest.json custom_components/yunmao/strings.json custom_components/yunmao/translations/en.json custom_components/yunmao/client.py custom_components/yunmao/coordinator.py custom_components/yunmao/diagnostics.py custom_components/yunmao/entity.py custom_components/yunmao/yunmao_data.py && git commit -m \"refactor yunmao for modern Home Assistant\"",
+            "max_output_tokens": 4000,
+            "workdir": "/Users/caishili/Documents/Personal/yunmao",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-19T08:23:25.189Z"
+        }
+      ],
+      "total_additions": 1039,
+      "total_deletions": 610,
+      "accepted_lines": 1030,
+      "overriden_lines": 0
+    }
+  },
+  "logical_commit_id": "e9290ac8b15ccb8f3cdbb0e2845429074cd0d809"
+}
