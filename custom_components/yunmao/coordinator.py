@@ -20,6 +20,7 @@ from .client import YunMaoClient, YunMaoClientError
 from .const import (
     DEFAULT_POLL_INTERVAL,
     DOMAIN,
+    PUSH_FALLBACK_IDLE_SECONDS,
     PUSH_PORT,
     YunMaoCoverDescription,
     YunMaoLightDescription,
@@ -205,6 +206,8 @@ class YunMaoCoordinator(DataUpdateCoordinator[YunMaoCoordinatorData]):
         self._known_cover_macs = {desc.mac for desc in self.cover_descriptions}
         self._cover_positions: dict[str, int] = {}
         self._cover_motion_deadlines: dict[str, tuple[str, float]] = {}
+        self._last_gateway_event_monotonic: float | None = None
+        self._last_push_monotonic: float | None = None
 
         super().__init__(
             hass,
@@ -216,13 +219,21 @@ class YunMaoCoordinator(DataUpdateCoordinator[YunMaoCoordinatorData]):
     async def _async_update_data(self) -> YunMaoCoordinatorData:
         """Fetch fresh state from the gateway."""
 
+        if self.data is not None and not self._should_query_gateway():
+            return self.data
+
         try:
-            return self._parse_query_payload(await self.client.async_fetch_state())
+            data = self._parse_query_payload(await self.client.async_fetch_state())
         except YunMaoClientError as err:
             raise UpdateFailed(str(err)) from err
 
+        self._last_gateway_event_monotonic = monotonic()
+        return data
+
     def handle_push_payload(self, payload: dict[str, Any]) -> None:
         """Merge gateway push data into the cached state."""
+
+        self._last_gateway_event_monotonic = monotonic()
 
         if payload.get("requestType") != "update":
             return
@@ -232,6 +243,8 @@ class YunMaoCoordinator(DataUpdateCoordinator[YunMaoCoordinatorData]):
 
         if not isinstance(mac, str) or not isinstance(attributes, dict):
             return
+
+        self._last_push_monotonic = monotonic()
 
         switch_states = dict(self.data.switch_states) if self.data else {}
         cover_states = dict(self.data.cover_states) if self.data else {}
@@ -414,6 +427,11 @@ class YunMaoCoordinator(DataUpdateCoordinator[YunMaoCoordinatorData]):
 
         return {
             "host_reachable": self.last_update_success,
+            "push_fallback_idle_seconds": PUSH_FALLBACK_IDLE_SECONDS,
+            "seconds_since_last_gateway_event": self._seconds_since(
+                self._last_gateway_event_monotonic
+            ),
+            "seconds_since_last_push": self._seconds_since(self._last_push_monotonic),
             "light_count": len(self.light_descriptions),
             "cover_count": len(self.cover_descriptions),
             "known_light_macs": len(self._known_light_macs),
@@ -500,6 +518,26 @@ class YunMaoCoordinator(DataUpdateCoordinator[YunMaoCoordinatorData]):
         elif status == "STOP":
             self._cover_motion_deadlines.pop(mac, None)
             self._cover_positions.setdefault(mac, 50)
+
+    def _should_query_gateway(self) -> bool:
+        """Return True when polling should fall back to a direct gateway query."""
+
+        if self._last_gateway_event_monotonic is None:
+            return True
+
+        return (
+            monotonic() - self._last_gateway_event_monotonic
+            >= PUSH_FALLBACK_IDLE_SECONDS
+        )
+
+    @staticmethod
+    def _seconds_since(last_seen: float | None) -> int | None:
+        """Return the whole-second age of a monotonic timestamp."""
+
+        if last_seen is None:
+            return None
+
+        return int(monotonic() - last_seen)
 
     @staticmethod
     def _switch_bit_is_on(status: int | None, pos: int) -> bool | None:
