@@ -3,9 +3,10 @@
   "name": "Yun Mao",
   "codeowners": ["@coderchoy"],
   "config_flow": true,
-  "documentation": "https://www.home-assistant.io/integrations/yunmao",
+  "documentation": "https://github.com/CoderChoy/yunmao#readme",
   "integration_type": "hub",
   "iot_class": "local_push",
+  "issue_tracker": "https://github.com/CoderChoy/yunmao/issues",
   "single_config_entry": true,
   "version": "2.0.0"
 }
