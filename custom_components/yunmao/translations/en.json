@@ -5,7 +5,8 @@
             "single_instance_allowed": "Already configured. Only a single configuration possible."
         },
         "error": {
-            "address_not_valid": "IPv4 address not valid"
+            "address_not_valid": "IPv4 address not valid",
+            "cannot_connect": "Failed to connect to the gateway"
         },
         "step": {
             "user": {

@@ -3,12 +3,9 @@
   "name": "Yun Mao",
   "codeowners": ["@coderchoy"],
   "config_flow": true,
-  "dependencies": [],
   "documentation": "https://www.home-assistant.io/integrations/yunmao",
-  "homekit": {},
-  "iot_class": "local_polling",
-  "requirements": ["APScheduler==3.10.1"],
-  "ssdp": [],
-  "zeroconf": [],
-  "version": "1.0.0"
+  "integration_type": "hub",
+  "iot_class": "local_push",
+  "single_config_entry": true,
+  "version": "2.0.0"
 }

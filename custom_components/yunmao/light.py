@@ -1,117 +1,55 @@
-import logging
-import socket
+"""Light platform for Yun Mao."""
+
+from __future__ import annotations
+
 from typing import Any
 
-from homeassistant import config_entries
 from homeassistant.components.light import ColorMode, LightEntity
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import (
-    CONF_INPUT_IP,
-    CONF_MAC,
-    CONF_MAC2,
-    CONF_NAME,
-    CONF_PLATFORM,
-    CONF_POS,
-    CONF_POS2,
-    DOMAIN,
-)
-
-_LOGGER = logging.getLogger(__name__)
+from .coordinator import YunMaoConfigEntry
+from .entity import YunMaoEntity
 
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    config_entry: ConfigEntry,
+    entry: YunMaoConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Setup sensors from a config entry created in the integrations UI."""
-    if config_entry.data[CONF_PLATFORM] != Platform.LIGHT:
-        _LOGGER.warning(
-            "config_entry.data[CONF_PLATFORM] != Platform.LIGHT %s", config_entry.data
-        )
+    """Set up Yun Mao light entities."""
+
+    del hass
+
+    if not entry.runtime_data.coordinator.light_descriptions:
         return
-    config = hass.data[DOMAIN][config_entry.entry_id]
-    # Update our config to include new repos and remove those that have been removed.
-    if config_entry.options:
-        config.update(config_entry.options)
-    lights = [YunMaoLight(config_entry)]
-    async_add_entities(lights, update_before_add=True)
+
+    async_add_entities(
+        YunMaoLight(entry.runtime_data.coordinator, description)
+        for description in entry.runtime_data.coordinator.light_descriptions
+    )
 
 
-class YunMaoLight(LightEntity):
+class YunMaoLight(YunMaoEntity, LightEntity):
+    """Representation of a Yun Mao light."""
+
     _attr_color_mode = ColorMode.ONOFF
-    _attr_supported_color_modes = ColorMode.ONOFF
-
-    def __init__(self, entry: config_entries.ConfigEntry):
-        self._ip_addr = entry.data[CONF_INPUT_IP]
-        self._name = entry.data[CONF_NAME]
-        self._mac = entry.data[CONF_MAC]
-        self._pos = entry.data[CONF_POS]
-        self._mac2 = entry.data[CONF_MAC2]
-        self._pos2 = entry.data[CONF_POS2]
-        self.get_ym_singleton().add_light_entity(self)
+    _attr_supported_color_modes = {ColorMode.ONOFF}
 
     @property
-    def name(self) -> str | None:
-        return self._name
+    def is_on(self) -> bool | None:
+        """Return whether the light is on."""
 
-    @property
-    def unique_id(self) -> str | None:
-        return self._name
+        return self.coordinator.is_light_on(self.description)
 
-    @property
-    def device_info(self) -> DeviceInfo:
-        """Return the device info."""
-        device_info = DeviceInfo(
-            identifiers={(DOMAIN, self.unique_id)},
-            manufacturer="lierda-new",
-            model="switch-pln",
-            name=self._name,
-        )
-        return device_info
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Turn the light on."""
 
-    def turn_on(self, **kwargs: Any) -> None:
-        self._set_light_is_on(self._mac, self._pos, True)
-        if self._mac2 is not None:
-            self._set_light_is_on(self._mac2, self._pos2, True)
+        del kwargs
+        await self.coordinator.async_set_light_state(self.description, True)
 
-    def turn_off(self, **kwargs: Any) -> None:
-        self._set_light_is_on(self._mac, self._pos, False)
-        if self._mac2 is not None:
-            self._set_light_is_on(self._mac2, self._pos2, False)
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Turn the light off."""
 
-    def _set_light_is_on(self, mac, pos, is_on):
-        if is_on:
-            body = (
-                '{"sourceId":"'
-                + self._ip_addr
-                + '","serialNum":"210431","requestType":"cmd","id":"'
-                + mac
-                + '","attributes":{"KY'
-                + pos
-                + '":"ON"}}'
-            )
-        else:
-            body = (
-                '{"sourceId":"'
-                + self._ip_addr
-                + '","serialNum":"210431","requestType":"cmd","id":"'
-                + mac
-                + '","attributes":{"KY'
-                + pos
-                + '":"OFF"}}'
-            )
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(2)
-        s.connect((self._ip_addr, 8888))
-        s.sendall(body.encode())
-        self._attr_is_on = is_on
-
-    def get_ym_singleton(self):
-        from .yunmao_data import ym_singleton
-        return ym_singleton
+        del kwargs
+        await self.coordinator.async_set_light_state(self.description, False)

@@ -1,55 +1,45 @@
-"""Yun Mao Component."""
+"""The Yun Mao integration."""
 
-import logging
+from __future__ import annotations
 
-from homeassistant import config_entries, core
-from homeassistant.const import Platform
+from homeassistant.core import HomeAssistant
 
-from .const import CONF_PLATFORM, DOMAIN
+from .client import YunMaoClient
+from .const import CONF_INPUT_IP, DOMAIN, PLATFORMS
+from .coordinator import (
+    YunMaoConfigEntry,
+    YunMaoCoordinator,
+    YunMaoRuntimeData,
+    async_get_push_server,
+)
 
-_LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.LIGHT, Platform.COVER]
+async def async_setup(hass: HomeAssistant, config: dict) -> bool:
+    """Set up the Yun Mao integration."""
 
-
-async def async_setup_entry(
-    hass: core.HomeAssistant, entry: config_entries.ConfigEntry
-) -> bool:
-    """Set up platform from a ConfigEntry."""
+    del config
     hass.data.setdefault(DOMAIN, {})
-    hass_data = dict(entry.data)
-    # Registers update listener to update config entry when options are updated.
-    unsub_options_update_listener = entry.add_update_listener(options_update_listener)
-    # Store a reference to the unsubscribe function to cleanup if an entry is unloaded.
-    hass_data["unsub_options_update_listener"] = unsub_options_update_listener
-    hass.data[DOMAIN][entry.entry_id] = hass_data
+    return True
 
-    # Forward the setup to the sensor platform.
+
+async def async_setup_entry(hass: HomeAssistant, entry: YunMaoConfigEntry) -> bool:
+    """Set up Yun Mao from a config entry."""
+
+    client = YunMaoClient(entry.data[CONF_INPUT_IP])
+    coordinator = YunMaoCoordinator(hass, client, dict(entry.data))
+    remove_push_listener = await async_get_push_server(hass).async_add_listener(
+        coordinator.handle_push_payload
+    )
+
+    entry.async_on_unload(remove_push_listener)
+    entry.runtime_data = YunMaoRuntimeData(client=client, coordinator=coordinator)
+
+    await coordinator.async_config_entry_first_refresh()
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
 
-async def options_update_listener(
-    hass: core.HomeAssistant, config_entry: config_entries.ConfigEntry
-):
-    """Handle options update."""
-    await hass.config_entries.async_reload(config_entry.entry_id)
+async def async_unload_entry(hass: HomeAssistant, entry: YunMaoConfigEntry) -> bool:
+    """Unload a Yun Mao config entry."""
 
-
-async def async_unload_entry(
-    hass: core.HomeAssistant, entry: config_entries.ConfigEntry
-) -> bool:
-    """Unload a config entry."""
-    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        # Remove config entry from domain.
-        entry_data = hass.data[DOMAIN].pop(entry.entry_id)
-        # Remove options_update_listener.
-        entry_data["unsub_options_update_listener"]()
-
-    return unload_ok
-
-
-async def async_setup(hass: core.HomeAssistant, config: dict) -> bool:
-    """Set up the GitHub Custom component from yaml configuration."""
-    hass.data.setdefault(DOMAIN, {})
-    return True
+    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
